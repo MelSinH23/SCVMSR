@@ -1,31 +1,64 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<!-- Top Selling -->
+<div class="col-12">
+    <div class="card top-selling overflow-auto">
+        <div class="card-body pb-0">
+            <h5 class="card-title">Resumen</h5>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+            <table class="table table-borderless datatable">
+                <thead>
+                    <tr>
+                        <th scope="col">Foto</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Puesto</th>
+                        <th scope="col">Saldo</th>
+                        <th scope="col">Fecha Cumplimiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row"><a href="#"><img src="~/Content/assets/img/product-1.jpg" alt="" style="width: 50px; height: 50px;"></a></th>
+                        <td><a href="#" class="text-primary fw-bold">Ut inventore ipsa voluptas nulla</a></td>
+                        <td>$64</td>
+                        <td class="fw-bold">124</td>
+                        <td>$5,828</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><a href="#"><img src="~/Content/assets/img/product-2.jpg" alt="" style="width: 50px; height: 50px;"></a></th>
+                        <td><a href="#" class="text-primary fw-bold">Exercitationem similique doloremque</a></td>
+                        <td>$46</td>
+                        <td class="fw-bold">98</td>
+                        <td>$4,508</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><a href="#"><img src="~/Content/assets/img/product-3.jpg" alt="" style="width: 50px; height: 50px;"></a></th>
+                        <td><a href="#" class="text-primary fw-bold">Doloribus nisi exercitationem</a></td>
+                        <td>$59</td>
+                        <td class="fw-bold">74</td>
+                        <td>$4,366</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><a href="#"><img src="~/Content/assets/img/product-4.jpg" alt="" style="width: 50px; height: 50px;"></a></th>
+                        <td><a href="#" class="text-primary fw-bold">Officiis quaerat sint rerum error</a></td>
+                        <td>$32</td>
+                        <td class="fw-bold">63</td>
+                        <td>$2,016</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><a href="#"><img src="~/Content/assets/img/product-5.jpg" alt="" style="width: 50px; height: 50px;"></a></th>
+                        <td><a href="#" class="text-primary fw-bold">Sit unde debitis delectus repellendus</a></td>
+                        <td>$79</td>
+                        <td class="fw-bold">41</td>
+                        <td>$3,239</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+</div><!-- End Top Selling -->
