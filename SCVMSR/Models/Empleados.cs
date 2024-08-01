@@ -32,7 +32,9 @@ namespace SCVMSR.Models
         public string CorreoElectronico { get; set; }
         public string Telefono { get; set; }
         public Nullable<bool> Estado { get; set; }
-        public Nullable<int> Saldo { get; set; }
+        public int Saldo { get; set; }
+        public string FileName { get; set; }
+        public byte[] ImageData { get; set; }
     
         public virtual Departamentos Departamentos { get; set; }
         public virtual Puestos Puestos { get; set; }

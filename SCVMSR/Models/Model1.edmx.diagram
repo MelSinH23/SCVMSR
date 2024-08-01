@@ -4,16 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c14e2410cd1a4665ba398db5a015ce02" Name="Diagram1">
-        <EntityTypeShape EntityType="SCVMSRModel.Departamentos" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SCVMSRModel.Empleados" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SCVMSRModel.Puestos" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SCVMSRModel.Solicitudes" Width="1.5" PointX="7.5" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SCVMSRModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="SCVMSRModel.FK__Empleados__Saldo__5535A963" ManuallyRouted="false" />
-        <AssociationConnector Association="SCVMSRModel.FK__Puestos__IdDepar__52593CB8" ManuallyRouted="false" />
-        <AssociationConnector Association="SCVMSRModel.FK__Empleados__IdPue__5629CD9C" ManuallyRouted="false" />
-        <AssociationConnector Association="SCVMSRModel.FK__Solicitud__IdEmp__59063A47" ManuallyRouted="false" />
+      <Diagram DiagramId="ece4c6a2fb3942f1b4c813d3b694a25f" Name="Diagram1">
+        <EntityTypeShape EntityType="SCVMSRModel.Departamentos" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCVMSRModel.Empleados" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCVMSRModel.Puestos" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="SCVMSRModel.Solicitudes" Width="1.5" PointX="7.5" PointY="6.125" IsExpanded="true" />
+        <AssociationConnector Association="SCVMSRModel.FK__Empleados__Image__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="SCVMSRModel.FK__Puestos__IdDepar__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="SCVMSRModel.FK__Empleados__IdPue__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="SCVMSRModel.FK__Solicitud__IdEmp__52593CB8" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

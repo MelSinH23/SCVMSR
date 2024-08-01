@@ -208,15 +208,10 @@
     <Compile Include="Models\Solicitudes.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagrams_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagrams.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\ViewModel\DepartamentosModel.cs" />
+    <Compile Include="Models\ViewModel\EmpleadosModel.cs" />
+    <Compile Include="Models\ViewModel\PuestosModel.cs" />
+    <Compile Include="Models\ViewModel\SolicitudesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -535,13 +530,6 @@
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\assets\vendor\apexcharts\locales\ar.json" />
     <Content Include="Content\assets\vendor\apexcharts\locales\be-cyrl.json" />
     <Content Include="Content\assets\vendor\apexcharts\locales\be-latn.json" />
@@ -641,6 +629,13 @@
     <Content Include="Content\assets\vendor\tinymce\license.md" />
     <Content Include="Content\assets\vendor\tinymce\package.json" />
     <Content Include="Content\assets\vendor\tinymce\README.md" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
