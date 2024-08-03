@@ -9,14 +9,14 @@
           <Key>
             <PropertyRef Name="IdDepartamento" />
           </Key>
-          <Property Name="IdDepartamento" Type="int" Nullable="false" />
+          <Property Name="IdDepartamento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="Empleados">
           <Key>
             <PropertyRef Name="IdEmpleado" />
           </Key>
-          <Property Name="IdEmpleado" Type="int" Nullable="false" />
+          <Property Name="IdEmpleado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="SegundoNombre" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PrimerApellido" Type="varchar" MaxLength="100" Nullable="false" />
@@ -36,7 +36,7 @@
           <Key>
             <PropertyRef Name="IdPuesto" />
           </Key>
-          <Property Name="IdPuesto" Type="int" Nullable="false" />
+          <Property Name="IdPuesto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="IdDepartamento" Type="int" />
         </EntityType>
@@ -131,7 +131,7 @@
           <Key>
             <PropertyRef Name="IdDepartamento" />
           </Key>
-          <Property Name="IdDepartamento" Type="Int32" Nullable="false" />
+          <Property Name="IdDepartamento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Empleados" Relationship="Self.FK__Empleados__Image__4E88ABD4" FromRole="Departamentos" ToRole="Empleados" />
           <NavigationProperty Name="Puestos" Relationship="Self.FK__Puestos__IdDepar__4BAC3F29" FromRole="Departamentos" ToRole="Puestos" />
@@ -140,7 +140,7 @@
           <Key>
             <PropertyRef Name="IdEmpleado" />
           </Key>
-          <Property Name="IdEmpleado" Type="Int32" Nullable="false" />
+          <Property Name="IdEmpleado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="SegundoNombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PrimerApellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
@@ -163,7 +163,7 @@
           <Key>
             <PropertyRef Name="IdPuesto" />
           </Key>
-          <Property Name="IdPuesto" Type="Int32" Nullable="false" />
+          <Property Name="IdPuesto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdDepartamento" Type="Int32" />
           <NavigationProperty Name="Departamentos" Relationship="Self.FK__Puestos__IdDepar__4BAC3F29" FromRole="Puestos" ToRole="Departamentos" />

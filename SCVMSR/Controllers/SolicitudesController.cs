@@ -11,116 +11,112 @@ using SCVMSR.Models;
 namespace SCVMSR.Controllers
 {
     //[Authorize]
-    public class EmpleadosController : Controller
+    public class SolicitudesController : Controller
     {
         private SCVMSREntities db = new SCVMSREntities();
 
-        // GET: Empleados
+        // GET: Solicitudes
         public ActionResult Index()
         {
-            var empleados = db.Empleados.Include(e => e.Departamentos).Include(e => e.Puestos);
-            return View(empleados.ToList());
+            var solicitudes = db.Solicitudes.Include(s => s.Empleados);
+            return View(solicitudes.ToList());
         }
 
-        // GET: Empleados/Details/5
+        // GET: Solicitudes/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Empleados empleados = db.Empleados.Find(id);
-            if (empleados == null)
+            Solicitudes solicitudes = db.Solicitudes.Find(id);
+            if (solicitudes == null)
             {
                 return HttpNotFound();
             }
-            return View(empleados);
+            return View(solicitudes);
         }
 
-        // GET: Empleados/Create
+        // GET: Solicitudes/Create
         public ActionResult Create()
         {
-            ViewBag.IdDepartamento = new SelectList(db.Departamentos, "IdDepartamento", "Nombre");
-            ViewBag.IdPuesto = new SelectList(db.Puestos, "IdPuesto", "Nombre");
+            ViewBag.IdEmpleado = new SelectList(db.Empleados, "IdEmpleado", "Nombre");
             return View();
         }
 
-        // POST: Empleados/Create
+        // POST: Solicitudes/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdEmpleado,Nombre,SegundoNombre,PrimerApellido,SegundoApellido,FechaNacimiento,FechaContratacion,IdDepartamento,IdPuesto,CorreoElectronico,Telefono,Estado,Saldo,FileName,ImageData")] Empleados empleados)
+        public ActionResult Create([Bind(Include = "IdSolicitud,IdEmpleado,Motivo,FechaInicio,FechaFin,Estado,FechaSolicitud")] Solicitudes solicitudes)
         {
             if (ModelState.IsValid)
             {
-                db.Empleados.Add(empleados);
+                db.Solicitudes.Add(solicitudes);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdDepartamento = new SelectList(db.Departamentos, "IdDepartamento", "Nombre", empleados.IdDepartamento);
-            ViewBag.IdPuesto = new SelectList(db.Puestos, "IdPuesto", "Nombre", empleados.IdPuesto);
-            return View(empleados);
+            ViewBag.IdEmpleado = new SelectList(db.Empleados, "IdEmpleado", "Nombre", solicitudes.IdEmpleado);
+            return View(solicitudes);
         }
 
-        // GET: Empleados/Edit/5
+        // GET: Solicitudes/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Empleados empleados = db.Empleados.Find(id);
-            if (empleados == null)
+            Solicitudes solicitudes = db.Solicitudes.Find(id);
+            if (solicitudes == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IdDepartamento = new SelectList(db.Departamentos, "IdDepartamento", "Nombre", empleados.IdDepartamento);
-            ViewBag.IdPuesto = new SelectList(db.Puestos, "IdPuesto", "Nombre", empleados.IdPuesto);
-            return View(empleados);
+            ViewBag.IdEmpleado = new SelectList(db.Empleados, "IdEmpleado", "Nombre", solicitudes.IdEmpleado);
+            return View(solicitudes);
         }
 
-        // POST: Empleados/Edit/5
+        // POST: Solicitudes/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdEmpleado,Nombre,SegundoNombre,PrimerApellido,SegundoApellido,FechaNacimiento,FechaContratacion,IdDepartamento,IdPuesto,CorreoElectronico,Telefono,Estado,Saldo,FileName,ImageData")] Empleados empleados)
+        public ActionResult Edit([Bind(Include = "IdSolicitud,IdEmpleado,Motivo,FechaInicio,FechaFin,Estado,FechaSolicitud")] Solicitudes solicitudes)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(empleados).State = EntityState.Modified;
+                db.Entry(solicitudes).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IdDepartamento = new SelectList(db.Departamentos, "IdDepartamento", "Nombre", empleados.IdDepartamento);
-            ViewBag.IdPuesto = new SelectList(db.Puestos, "IdPuesto", "Nombre", empleados.IdPuesto);
-            return View(empleados);
+            ViewBag.IdEmpleado = new SelectList(db.Empleados, "IdEmpleado", "Nombre", solicitudes.IdEmpleado);
+            return View(solicitudes);
         }
 
-        // GET: Empleados/Delete/5
+        // GET: Solicitudes/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Empleados empleados = db.Empleados.Find(id);
-            if (empleados == null)
+            Solicitudes solicitudes = db.Solicitudes.Find(id);
+            if (solicitudes == null)
             {
                 return HttpNotFound();
             }
-            return View(empleados);
+            return View(solicitudes);
         }
 
-        // POST: Empleados/Delete/5
+        // POST: Solicitudes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Empleados empleados = db.Empleados.Find(id);
-            db.Empleados.Remove(empleados);
+            Solicitudes solicitudes = db.Solicitudes.Find(id);
+            db.Solicitudes.Remove(solicitudes);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

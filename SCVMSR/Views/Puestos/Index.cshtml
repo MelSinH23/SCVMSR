@@ -1,0 +1,43 @@
+﻿@model IEnumerable<SCVMSR.Models.Puestos>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Crear Nuevo Puesto", "Create")
+</p>
+<table class="table datatable">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Departamentos.Nombre)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Departamentos.Nombre)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IdPuesto }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IdPuesto }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IdPuesto })
+            </td>
+        </tr>
+    }
+
+</table>
+    

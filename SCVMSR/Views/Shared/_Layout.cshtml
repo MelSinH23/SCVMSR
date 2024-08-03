@@ -13,6 +13,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="/DataTables/datatables.css" />
 
     <!-- Vendor CSS Files -->
     <link href="~/Content/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -24,7 +25,7 @@
     <link href="~/Content/assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
-    <link href="Content/assets/css/style.css" rel="stylesheet">
+    <link href="~/Content/assets/css/style.css" rel="stylesheet">
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -71,35 +72,34 @@
         </nav><!-- End Icons Navigation -->
 
     </header><!-- End Header -->
-
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link " href="index.html">
+                <a class="nav-link" href="@Url.Action("Index", "Home")">
                     <i class="bi bi-grid"></i>
                     <span>Resumen</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link " href="index.html">
+                <a class="nav-link " href="@Url.Action("Index", "Solicitudes")">
                     <i class="bi bi-file-earmark-text"></i>
                     <span>Solicitudes</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link " href="index.html">
+                <a class="nav-link " href="@Url.Action("Index", "Departamentos")">
                     <i class="bi bi-file-person"></i>
                     <span>Departamentos</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link " href="index.html">
+                <a class="nav-link " href="@Url.Action("Index", "Puestos")">
                     <i class="bi bi-file-earmark-person"></i>
                     <span>Puestos</span>
                 </a>
@@ -111,7 +111,7 @@
                 </a>
                 <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="components-alerts.html">
+                        <a href="@Url.Action("Index", "Empleados")">
                             <i class="bi bi-circle"></i><span>Activos</span>
                         </a>
                     </li>
@@ -146,6 +146,7 @@
     <!-- Template Main JS File -->
     <script src="~/Content/assets/js/main.js"></script>
 
+    <script src="/DataTables/datatables.js"></script>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
