@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Mes Anterior";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    System.Data.DataTable solicitudesMesAnt = ViewBag.SolicitudesMesAnt as System.Data.DataTable;
+}
+
+<div class="container">
+    <h2>Resumen de Solicitudes del Mes Anterior</h2>
+    @if (solicitudesMesAnt != null && solicitudesMesAnt.Rows.Count > 0)
+    {
+        <table class="table table-striped datatable">
+            <thead>
+                <tr>
+                    <th class="text-center">Solicitud</th>
+                    <th class="text-center">Empleado</th>
+                    <th class="text-center">Motivo</th>
+                    <th class="text-center">Fecha de Inicio</th>
+                    <th class="text-center">Fecha de Finalización</th>
+                    <th class="text-center">Estado</th>
+                    <th class="text-center">Fecha de Solicitud</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (System.Data.DataRow row in solicitudesMesAnt.Rows)
+                {
+                <tr>
+                    <td>Foto</td>
+                    <td>@row["IdSolicitud"]</td>
+                    <td>@row["IdEmpleado"]</td>
+                    <td>@row["Motivo"]</td>
+                    <td>@row["FechaInicio"]</td>
+                    <td>@row["FechaFin"]</td>
+                    <td>@row["Estado"]</td>
+                    <td>@row["FechaSolicitud"]</td>
+                    <td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No se encontraron empleados inactivos</p>
+    }
+</div>

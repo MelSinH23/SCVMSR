@@ -5,46 +5,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="col-12">
-    <div class="card top-selling overflow-auto">
-        <div class="card-body pb-0">
-            <h5 class="card-title">Resumen</h5>
-            <div class="col-12">
-                <a href="@Url.Action("Create", "Empleados")" class="align-items-center justify-content-center btn btn-primary w-100">Agregar Funcionario</a>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body pb-4">
+                    <h5 class="card-title">Bienvenido al Control de Vacaciones</h5>
+                    <p style="font-size: 15px">Seleccione desde los botones a continuación o la izquierda de su pantalla</p>
+                    <hr />
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-auto">
+                                <button class="btn btn-primary mb-2" href="@Url.Action("MesAnterior", "Solicitudes")">Solicitudes del mes anterior</button>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary mb-2" href="@Url.Action("Index", "Empleados")">Resumen de los Funcionarios</button>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary mb-2" href="@Url.Action("Index", "Solicitudes")">Resumen de las Solicitudes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <table class="table table-borderless datatable">
-                <thead>
-                    <tr>
-                        <th scope="col">Foto</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Primer Apellido</th>
-                        <th scope="col">Puesto Nombre</th>
-                        <th scope="col">Saldo</th>
-                        <th scope="col">Fecha de Contratación</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row"><a href="#"><img src="~/Content/assets/img/product-1.jpg" alt="" style="width: 50px; height: 50px;"></a></th>
-                        <td><a class="text-primary fw-bold">Juliana</a></td>
-                        <td><a class="text-primary fw-bold">Hernández</a></td>
-                        <td>Directora</td>
-                        <td class="fw-bold">10</td>
-                        <td>Ayer</td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><a href="#"><img src="~/Content/assets/img/product-1.jpg" alt="" style="width: 50px; height: 50px;"></a></th>
-                        <td><a class="text-primary fw-bold">Martina</a></td>
-                        <td><a class="text-primary fw-bold">Rodríguez</a></td>
-                        <td>Directora</td>
-                        <td class="fw-bold">10</td>
-                        <td>Ayer</td>
-                    </tr>
-                </tbody>
-            </table>
-
         </div>
-
     </div>
 </div>

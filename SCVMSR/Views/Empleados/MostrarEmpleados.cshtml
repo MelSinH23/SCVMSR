@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "MostrarEmpleados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.Title = "Resumen";
+
+    System.Data.DataTable resumenEmpleados = ViewBag.ResumenEmpleados as System.Data.DataTable;
+}
+
+<div class="container">
+    <h2>Resumen</h2>
+    @if (resumenEmpleados != null && resumenEmpleados.Rows.Count > 0)
+    {
+        <table class="table table-striped datatable">
+            <thead>
+                <tr>
+                    <th class="text-center">Foto</th>
+                    <th class="text-center">Nombre Completo</th>
+                    <th class="text-center">Puesto</th>
+                    <th class="text-center">Fecha de Contratación</th>
+                    <th class="text-center">Saldo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (System.Data.DataRow row in resumenEmpleados.Rows)
+                {
+                    <tr>
+                        <td>Foto</td>
+                        <td>@row["NombreCompleto"]</td>
+                        <td>@row["Puesto"]</td>
+                        <td>@row["FechaContratacion"]</td>
+                        <td>@row["Saldo"]</td>
+                        @*<td>@row["Nombre_Empleado"] @row["Apellido_Empleado"] </td>*@
+                        <td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No hay empleados que mostrar</p>
+    }
+
+</div>

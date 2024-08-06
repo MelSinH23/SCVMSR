@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -132,6 +133,96 @@ namespace SCVMSR.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult MostrarEmpleados()
+        {
+            DataTable resumenEmpleados = MostrarResumenEmpleados();
+
+            // Pasar los datos a la vista usando ViewBag
+            ViewBag.ResumenEmpleados = resumenEmpleados;
+
+            return View();
+        }
+
+        protected DataTable MostrarResumenEmpleados()
+        {
+            DataTable dataTable = new DataTable();
+            string connectionString = "Server=localhost\\sqlexpress;Database=SCVMRSR;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("MostrarEmpleados", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    dataTable.Load(reader);
+                }
+            }
+
+            return dataTable;
+        }
+
+        public ActionResult MostrarInactivos()
+        {
+            DataTable empleadosInactivos = MostrarResumenInactivos();
+
+            // Pasar los datos a la vista usando ViewBag
+            ViewBag.EmpleadosInactivos = empleadosInactivos;
+
+            return View();
+        }
+
+        protected DataTable MostrarResumenInactivos()
+        {
+            DataTable dataTable = new DataTable();
+            string connectionString = "Server=localhost\\sqlexpress;Database=SCVMSR;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("MostrarEmpleadosInactivos", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    dataTable.Load(reader);
+                }
+            }
+
+            return dataTable;
+        }
+
+        public ActionResult MostrarActivos()
+        {
+            DataTable empleadosActivos = MostrarResumenActivos();
+
+            // Pasar los datos a la vista usando ViewBag
+            ViewBag.EmpleadosActivos = empleadosActivos;
+
+            return View();
+        }
+
+        protected DataTable MostrarResumenActivos()
+        {
+            DataTable dataTable = new DataTable();
+            string connectionString = "Server=localhost\\sqlexpress;Database=SCVMSR;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("MostrarEmpleadosActivos", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    dataTable.Load(reader);
+                }
+            }
+
+            return dataTable;
         }
     }
 }

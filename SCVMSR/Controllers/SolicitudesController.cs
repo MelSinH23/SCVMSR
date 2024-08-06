@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -128,6 +129,36 @@ namespace SCVMSR.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult MesAnterior()
+        {
+            DataTable solicitudesMesAnt = MostrarResumenMesAnterior();
+
+            // Pasar los datos a la vista usando ViewBag
+            ViewBag.SolicitudesMesAnt = solicitudesMesAnt;
+
+            return View();
+        }
+
+        protected DataTable MostrarResumenMesAnterior()
+        {
+            DataTable dataTable = new DataTable();
+            string connectionString = "Server=localhost\\sqlexpress;Database=SCVMSR;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("MostrarSolicitudesMesAnterior", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    dataTable.Load(reader);
+                }
+            }
+
+            return dataTable;
         }
     }
 }
