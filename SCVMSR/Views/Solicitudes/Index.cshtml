@@ -5,13 +5,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<style>
+    .estado-rechazada {
+        color: red !important;
+        font-weight: bold !important;
+    }
+
+    .estado-aceptada {
+        color: green !important;
+        font-weight: bold !important;
+    }
+
+    .estado-pendiente {
+        color: gray !important;
+        font-weight: bold !important;
+    }
+
+</style>
+
+<h2>Solicitudes</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear Nueva Solicitud", "Create")
 </p>
 <table class="table datatable">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Empleados.Nombre)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Motivo)
         </th>
@@ -27,9 +48,6 @@
         <th>
             @Html.DisplayNameFor(model => model.FechaSolicitud)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Empleados.Nombre)
-        </th>
         <th></th>
     </tr>
 
@@ -37,6 +55,9 @@
     {
 
         <tr>
+            <td>
+                @string.Concat(item.Empleados.Nombre, " ", item.Empleados.SegundoNombre, " ", item.Empleados.PrimerApellido)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Motivo)
             </td>
@@ -46,19 +67,19 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FechaFin)
             </td>
-            <td>
+            <td class="@(item.Estado == "Rechazada" ? "estado-rechazada" : item.Estado == "Aceptada" ? "estado-aceptada" : "estado-pendiente")">
                 @Html.DisplayFor(modelItem => item.Estado)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FechaSolicitud)
             </td>
+            
             <td>
-                @Html.DisplayFor(modelItem => item.Empleados.Nombre)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.IdSolicitud }) |
-                @Html.ActionLink("Details", "Details", new { id = item.IdSolicitud }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.IdSolicitud })
+                @if (item.Estado != "Aceptada" && item.Estado != "Rechazada")
+                {
+                    <text>@Html.ActionLink("Editar", "Edit", new { id = item.IdSolicitud }) |</text>
+                    <text>@Html.ActionLink("Detalles", "Details", new { id = item.IdSolicitud })</text>
+                }
             </td>
         </tr>
     }

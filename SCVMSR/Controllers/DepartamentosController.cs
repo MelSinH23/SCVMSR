@@ -10,7 +10,7 @@ using SCVMSR.Models;
 
 namespace SCVMSR.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class DepartamentosController : Controller
     {
         private SCVMSREntities db = new SCVMSREntities();

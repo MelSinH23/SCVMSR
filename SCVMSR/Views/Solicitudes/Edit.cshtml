@@ -29,7 +29,22 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Motivo, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Motivo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.Motivo,
+                                      new SelectList(new List<SelectListItem>
+                                      {
+                                          new SelectListItem { Text = "Seleccione", Value = "", Selected = true },
+                                          new SelectListItem { Text = "Vacaciones", Value = "Vacaciones" },
+                                          new SelectListItem { Text = "Matrimonio", Value = "Matrimonio" },
+                                          new SelectListItem { Text = "Nacimiento de un hijo", Value = "NacimientoHijo" },
+                                          new SelectListItem { Text = "Enfermedad de un familiar", Value = "EnfermedadFamiliar" },
+                                          new SelectListItem { Text = "Licencia Médica", Value = "Médico" },
+                                          new SelectListItem { Text = "Emergencia Familiar", Value = "Emergencia" },
+                                          new SelectListItem { Text = "Mudanza", Value = "Mudanza" },
+                                          new SelectListItem { Text = "Luto", Value = "Luto" },
+                                          new SelectListItem { Text = "Maternidad/Paternidad", Value = "MaternidadPaternidad" },
+                                          new SelectListItem { Text = "Festividades Religiosas", Value = "Religion" }
+                                      }, "Value", "Text"),
+                                      new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Motivo, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -37,7 +52,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.FechaInicio, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control", type = "date" } })
                 @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -45,7 +60,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.FechaFin, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control", type = "date" } })
                 @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -53,7 +68,14 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.Estado,
+                                      new SelectList(new List<SelectListItem>
+                                      {
+                                          new SelectListItem { Text = "Pendiente", Value = "Pendiente", Selected = true },
+                                          new SelectListItem { Text = "Rechazada", Value = "Rechazada" },
+                                          new SelectListItem { Text = "Aceptada", Value = "Aceptada" },
+                                      }, "Value", "Text"),
+                                      new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -61,7 +83,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.FechaSolicitud, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FechaSolicitud, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.FechaSolicitud, new { htmlAttributes = new { @class = "form-control", type = "date" } })
                 @Html.ValidationMessageFor(model => model.FechaSolicitud, "", new { @class = "text-danger" })
             </div>
         </div>

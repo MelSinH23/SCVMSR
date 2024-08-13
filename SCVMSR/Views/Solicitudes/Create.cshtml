@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Crear Nueva Solicitud</h2>
 
 
 @using (Html.BeginForm()) 
@@ -13,7 +13,6 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Solicitudes</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -64,13 +63,12 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Motivo, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.Estado,
                                       new SelectList(new List<SelectListItem>
                                       {
-                                          new SelectListItem { Text = "Seleccione", Value = "", Selected = true },
-                                          new SelectListItem { Text = "Pendiente", Value = "Pendiente" },
+                                          new SelectListItem { Text = "Pendiente", Value = "Pendiente", Selected = true },
                                           new SelectListItem { Text = "Rechazada", Value = "Rechazada" },
                                           new SelectListItem { Text = "Aceptada", Value = "Aceptada" },
                                       }, "Value", "Text"),
@@ -89,7 +87,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Crear" class="btn btn-default" />
             </div>
         </div>
     </div>

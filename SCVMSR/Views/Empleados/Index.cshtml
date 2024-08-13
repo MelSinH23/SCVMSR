@@ -9,21 +9,12 @@
 
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear Nuevo Funcionario", "Create")
 </p>
 <table class="table datatable col">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SegundoNombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PrimerApellido)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SegundoApellido)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FechaNacimiento)
@@ -43,12 +34,12 @@
         <th>
             @Html.DisplayNameFor(model => model.Saldo)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.FileName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ImageData)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Departamentos.Nombre)
         </th>
@@ -62,16 +53,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SegundoNombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrimerApellido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SegundoApellido)
+                @string.Concat(item.Nombre, " ", item.SegundoNombre, " ", item.PrimerApellido)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FechaNacimiento)
@@ -86,17 +68,17 @@
                 @Html.DisplayFor(modelItem => item.Telefono)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Estado)
+                @(item.Estado.HasValue ? (item.Estado.Value ? "Activo" : "Inactivo") : "Desconocido")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Saldo)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.FileName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ImageData)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Departamentos.Nombre)
             </td>
@@ -104,9 +86,8 @@
                 @Html.DisplayFor(modelItem => item.Puestos.Nombre)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.IdEmpleado }) |
-                @Html.ActionLink("Details", "Details", new { id = item.IdEmpleado }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.IdEmpleado })
+                @Html.ActionLink("Editar", "Edit", new { id = item.IdEmpleado }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.IdEmpleado })
             </td>
         </tr>
     }

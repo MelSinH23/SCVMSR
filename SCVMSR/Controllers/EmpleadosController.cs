@@ -11,7 +11,7 @@ using SCVMSR.Models;
 
 namespace SCVMSR.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class EmpleadosController : Controller
     {
         private SCVMSREntities db = new SCVMSREntities();
@@ -55,6 +55,7 @@ namespace SCVMSR.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 db.Empleados.Add(empleados);
                 db.SaveChanges();
                 return RedirectToAction("Index");

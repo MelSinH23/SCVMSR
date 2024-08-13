@@ -11,7 +11,7 @@ using SCVMSR.Models;
 
 namespace SCVMSR.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class SolicitudesController : Controller
     {
         private SCVMSREntities db = new SCVMSREntities();
@@ -56,6 +56,12 @@ namespace SCVMSR.Controllers
             {
                 db.Solicitudes.Add(solicitudes);
                 db.SaveChanges();
+                // Verificar si la solicitud fue aprobada
+                if (solicitudes.Estado == "Aceptada")
+                {
+                    // Llamar al procedimiento almacenado para descontar el saldo
+                    DescontarSaldo(solicitudes.IdSolicitud);
+                }
                 return RedirectToAction("Index");
             }
 
@@ -90,6 +96,14 @@ namespace SCVMSR.Controllers
             {
                 db.Entry(solicitudes).State = EntityState.Modified;
                 db.SaveChanges();
+
+                // Verificar si la solicitud fue aprobada
+                if (solicitudes.Estado == "Aceptada")
+                {
+                    // Llamar al procedimiento almacenado para descontar el saldo
+                    DescontarSaldo(solicitudes.IdSolicitud);
+                }
+
                 return RedirectToAction("Index");
             }
             ViewBag.IdEmpleado = new SelectList(db.Empleados, "IdEmpleado", "Nombre", solicitudes.IdEmpleado);
@@ -160,5 +174,24 @@ namespace SCVMSR.Controllers
 
             return dataTable;
         }
+
+        private void DescontarSaldo(int idSolicitud)
+        {
+            string connectionString = "Server=localhost\\sqlexpress;Database=SCVMSR;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("DescontarSaldo", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@IdSolicitud", idSolicitud));
+
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
+
+
 }

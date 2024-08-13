@@ -11,15 +11,20 @@ namespace SCVMSR.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Solicitudes
     {
         public int IdSolicitud { get; set; }
         public Nullable<int> IdEmpleado { get; set; }
         public string Motivo { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> FechaInicio { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> FechaFin { get; set; }
         public string Estado { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> FechaSolicitud { get; set; }
     
         public virtual Empleados Empleados { get; set; }
