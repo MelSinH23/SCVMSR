@@ -14,6 +14,9 @@
 <table class="table datatable col">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Foto)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
         <th>
@@ -51,45 +54,42 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @string.Concat(item.Nombre, " ", item.SegundoNombre, " ", item.PrimerApellido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaNacimiento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaContratacion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CorreoElectronico)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono)
-            </td>
-            <td>
-                @(item.Estado.HasValue ? (item.Estado.Value ? "Activo" : "Inactivo") : "Desconocido")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Saldo)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.FileName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageData)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Departamentos.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Puestos.Nombre)
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.IdEmpleado }) |
-                @Html.ActionLink("Detalles", "Details", new { id = item.IdEmpleado })
-            </td>
-        </tr>
+<tr>
+    <td>
+        <img src="@Url.Content("~/FotosEmpleados/" + item.FileName)" alt="Imagen" width="100" height="100" />
+    </td>
+    <td>
+        @string.Concat(item.Nombre, " ", item.SegundoNombre, " ", item.PrimerApellido)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FechaNacimiento)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FechaContratacion)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.CorreoElectronico)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Telefono)
+    </td>
+    <td>
+        @(item.Estado.HasValue ? (item.Estado.Value ? "Activo" : "Inactivo") : "Desconocido")
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Saldo)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Departamentos.Nombre)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Puestos.Nombre)
+    </td>
+    <td>
+        @Html.ActionLink("Editar", "Edit", new { id = item.IdEmpleado }) |
+        @Html.ActionLink("Detalles", "Details", new { id = item.IdEmpleado })
+    </td>
+</tr>
     }
 
 </table>

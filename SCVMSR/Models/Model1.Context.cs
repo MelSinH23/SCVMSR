@@ -12,6 +12,8 @@ namespace SCVMSR.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class SCVMSREntities : DbContext
     {
@@ -29,5 +31,34 @@ namespace SCVMSR.Models
         public virtual DbSet<Empleados> Empleados { get; set; }
         public virtual DbSet<Puestos> Puestos { get; set; }
         public virtual DbSet<Solicitudes> Solicitudes { get; set; }
+    
+        public virtual int DescontarSaldo(Nullable<int> idSolicitud)
+        {
+            var idSolicitudParameter = idSolicitud.HasValue ?
+                new ObjectParameter("IdSolicitud", idSolicitud) :
+                new ObjectParameter("IdSolicitud", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DescontarSaldo", idSolicitudParameter);
+        }
+    
+        public virtual ObjectResult<MostrarEmpleados_Result> MostrarEmpleados()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MostrarEmpleados_Result>("MostrarEmpleados");
+        }
+    
+        public virtual ObjectResult<MostrarEmpleadosActivos_Result> MostrarEmpleadosActivos()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MostrarEmpleadosActivos_Result>("MostrarEmpleadosActivos");
+        }
+    
+        public virtual ObjectResult<MostrarEmpleadosInactivos_Result> MostrarEmpleadosInactivos()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MostrarEmpleadosInactivos_Result>("MostrarEmpleadosInactivos");
+        }
+    
+        public virtual ObjectResult<MostrarSolicitudesMesAnterior_Result> MostrarSolicitudesMesAnterior()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MostrarSolicitudesMesAnterior_Result>("MostrarSolicitudesMesAnterior");
+        }
     }
 }

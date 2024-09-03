@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -51,20 +52,39 @@ namespace SCVMSR.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdEmpleado,Nombre,SegundoNombre,PrimerApellido,SegundoApellido,FechaNacimiento,FechaContratacion,IdDepartamento,IdPuesto,CorreoElectronico,Telefono,Estado,Saldo,FileName,ImageData")] Empleados empleados)
+        public ActionResult Create([Bind(Include = "IdEmpleado,Nombre,SegundoNombre,PrimerApellido,SegundoApellido,FechaNacimiento,FechaContratacion,IdDepartamento,IdPuesto,CorreoElectronico,Telefono,Estado,Saldo,FileName,ImageData")] Empleados empleados, HttpPostedFileBase imagenFile)
         {
             if (ModelState.IsValid)
             {
+                try
+                {
+                    // Guardar el archivo en el servidor
+                    if (imagenFile != null && imagenFile.ContentLength > 0)
+                    {
+                        // Guardar la imagen en la carpeta deseada
+                        var imagePath = Path.Combine(Server.MapPath("~/FotosEmpleados/"), Path.GetFileName(imagenFile.FileName));
+                        imagenFile.SaveAs(imagePath);
 
-                db.Empleados.Add(empleados);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                        // Asignar el nombre de la imagen al modelo
+                        empleados.FileName = imagenFile.FileName;
+                    }
+
+                    db.Empleados.Add(empleados);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    // Registrar el error (podrías guardar esto en un log)
+                    ModelState.AddModelError("", "No se pudo guardar la imagen. Error: " + ex.Message);
+                }
             }
 
             ViewBag.IdDepartamento = new SelectList(db.Departamentos, "IdDepartamento", "Nombre", empleados.IdDepartamento);
             ViewBag.IdPuesto = new SelectList(db.Puestos, "IdPuesto", "Nombre", empleados.IdPuesto);
             return View(empleados);
         }
+
 
         // GET: Empleados/Edit/5
         public ActionResult Edit(int? id)

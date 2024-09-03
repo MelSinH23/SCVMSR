@@ -8,7 +8,7 @@
 <h2>Crear Nuevo Funcionario</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Empleados", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal"})) 
 {
     @Html.AntiForgeryToken()
     
@@ -117,18 +117,9 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.FileName, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("Foto", htmlAttributes: new { @class = "col-sm-3 col-form-label" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.FileName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.FileName, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ImageData, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ImageData, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ImageData, "", new { @class = "text-danger" })
+            <input type="file" name="imagenFile" id="imagenFile" class="form-control" />
         </div>
     </div>
 

@@ -100,6 +100,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="DescontarSaldo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdSolicitud" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MostrarEmpleados" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MostrarEmpleadosActivos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MostrarEmpleadosInactivos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MostrarSolicitudesMesAnterior" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="SCVMSRModelStoreContainer">
           <EntitySet Name="Departamentos" EntityType="Self.Departamentos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Empleados" EntityType="Self.Empleados" Schema="dbo" store:Type="Tables" />
@@ -251,7 +258,41 @@
             <End Role="Empleados" EntitySet="Empleados" />
             <End Role="Solicitudes" EntitySet="Solicitudes" />
           </AssociationSet>
+          <FunctionImport Name="DescontarSaldo">
+            <Parameter Name="IdSolicitud" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MostrarEmpleados" ReturnType="Collection(SCVMSRModel.MostrarEmpleados_Result)" />
+          <FunctionImport Name="MostrarEmpleadosActivos" ReturnType="Collection(SCVMSRModel.MostrarEmpleadosActivos_Result)" />
+          <FunctionImport Name="MostrarEmpleadosInactivos" ReturnType="Collection(SCVMSRModel.MostrarEmpleadosInactivos_Result)" />
+          <FunctionImport Name="MostrarSolicitudesMesAnterior" ReturnType="Collection(SCVMSRModel.MostrarSolicitudesMesAnterior_Result)" />
         </EntityContainer>
+        <ComplexType Name="MostrarEmpleados_Result">
+          <Property Type="String" Name="NombreCompleto" Nullable="false" MaxLength="302" />
+          <Property Type="String" Name="Puesto" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="FechaContratacion" Nullable="true" />
+          <Property Type="Int32" Name="Saldo" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="MostrarEmpleadosActivos_Result">
+          <Property Type="String" Name="NombreCompleto" Nullable="false" MaxLength="302" />
+          <Property Type="String" Name="Puesto" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="FechaContratacion" Nullable="true" />
+          <Property Type="Int32" Name="Saldo" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="MostrarEmpleadosInactivos_Result">
+          <Property Type="String" Name="NombreCompleto" Nullable="false" MaxLength="302" />
+          <Property Type="String" Name="Puesto" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="FechaContratacion" Nullable="true" />
+          <Property Type="Int32" Name="Saldo" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="MostrarSolicitudesMesAnterior_Result">
+          <Property Type="Int32" Name="IdSolicitud" Nullable="false" />
+          <Property Type="Int32" Name="IdEmpleado" Nullable="true" />
+          <Property Type="String" Name="Motivo" Nullable="true" MaxLength="250" />
+          <Property Type="DateTime" Name="FechaInicio" Nullable="true" />
+          <Property Type="DateTime" Name="FechaFin" Nullable="true" />
+          <Property Type="String" Name="Estado" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="FechaSolicitud" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -309,6 +350,50 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DescontarSaldo" FunctionName="SCVMSRModel.Store.DescontarSaldo" />
+          <FunctionImportMapping FunctionImportName="MostrarEmpleados" FunctionName="SCVMSRModel.Store.MostrarEmpleados">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SCVMSRModel.MostrarEmpleados_Result">
+                <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
+                <ScalarProperty Name="FechaContratacion" ColumnName="FechaContratacion" />
+                <ScalarProperty Name="Saldo" ColumnName="Saldo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MostrarEmpleadosActivos" FunctionName="SCVMSRModel.Store.MostrarEmpleadosActivos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SCVMSRModel.MostrarEmpleadosActivos_Result">
+                <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
+                <ScalarProperty Name="FechaContratacion" ColumnName="FechaContratacion" />
+                <ScalarProperty Name="Saldo" ColumnName="Saldo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MostrarEmpleadosInactivos" FunctionName="SCVMSRModel.Store.MostrarEmpleadosInactivos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SCVMSRModel.MostrarEmpleadosInactivos_Result">
+                <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
+                <ScalarProperty Name="FechaContratacion" ColumnName="FechaContratacion" />
+                <ScalarProperty Name="Saldo" ColumnName="Saldo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MostrarSolicitudesMesAnterior" FunctionName="SCVMSRModel.Store.MostrarSolicitudesMesAnterior">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SCVMSRModel.MostrarSolicitudesMesAnterior_Result">
+                <ScalarProperty Name="IdSolicitud" ColumnName="IdSolicitud" />
+                <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
+                <ScalarProperty Name="Motivo" ColumnName="Motivo" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="FechaSolicitud" ColumnName="FechaSolicitud" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

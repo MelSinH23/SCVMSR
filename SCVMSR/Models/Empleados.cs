@@ -11,8 +11,7 @@ namespace SCVMSR.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Empleados
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -26,9 +25,7 @@ namespace SCVMSR.Models
         public string SegundoNombre { get; set; }
         public string PrimerApellido { get; set; }
         public string SegundoApellido { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> FechaNacimiento { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> FechaContratacion { get; set; }
         public Nullable<int> IdDepartamento { get; set; }
         public Nullable<int> IdPuesto { get; set; }
@@ -38,7 +35,9 @@ namespace SCVMSR.Models
         public int Saldo { get; set; }
         public string FileName { get; set; }
         public byte[] ImageData { get; set; }
-    
+
+        public string Foto { get; set; }
+
         public virtual Departamentos Departamentos { get; set; }
         public virtual Puestos Puestos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -10,18 +10,12 @@
 namespace SCVMSR.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Solicitudes
+    public partial class MostrarEmpleadosActivos_Result
     {
-        public int IdSolicitud { get; set; }
-        public Nullable<int> IdEmpleado { get; set; }
-        public string Motivo { get; set; }
-        public Nullable<System.DateTime> FechaInicio { get; set; }
-        public Nullable<System.DateTime> FechaFin { get; set; }
-        public string Estado { get; set; }
-        public Nullable<System.DateTime> FechaSolicitud { get; set; }
-    
-        public virtual Empleados Empleados { get; set; }
+        public string NombreCompleto { get; set; }
+        public string Puesto { get; set; }
+        public Nullable<System.DateTime> FechaContratacion { get; set; }
+        public int Saldo { get; set; }
     }
 }

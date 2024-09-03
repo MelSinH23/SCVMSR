@@ -21,7 +21,7 @@ namespace SCVMSR.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("SCVMSR", throwIfV1Schema: false)
         {
         }
 

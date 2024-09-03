@@ -26,7 +26,6 @@
                 @foreach (System.Data.DataRow row in solicitudesMesAnt.Rows)
                 {
                 <tr>
-                    <td>Foto</td>
                     <td>@row["IdSolicitud"]</td>
                     <td>@row["IdEmpleado"]</td>
                     <td>@row["Motivo"]</td>
@@ -34,7 +33,6 @@
                     <td>@row["FechaFin"]</td>
                     <td>@row["Estado"]</td>
                     <td>@row["FechaSolicitud"]</td>
-                    <td>
                 </tr>
                 }
             </tbody>
