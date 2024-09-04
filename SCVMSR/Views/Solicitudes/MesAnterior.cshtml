@@ -8,6 +8,8 @@
 
 <div class="container">
     <h2>Resumen de Solicitudes del Mes Anterior</h2>
+    @Html.ActionLink("Generar PDF del resumen del Mes Anterior", "ImprimirResumenMesAnteriorPDF", "Solicitudes", new { }, new { @class = "btn btn-primary" })
+
     @if (solicitudesMesAnt != null && solicitudesMesAnt.Rows.Count > 0)
     {
         <table class="table table-striped datatable">
@@ -25,15 +27,15 @@
             <tbody>
                 @foreach (System.Data.DataRow row in solicitudesMesAnt.Rows)
                 {
-                <tr>
-                    <td>@row["IdSolicitud"]</td>
-                    <td>@row["IdEmpleado"]</td>
-                    <td>@row["Motivo"]</td>
-                    <td>@row["FechaInicio"]</td>
-                    <td>@row["FechaFin"]</td>
-                    <td>@row["Estado"]</td>
-                    <td>@row["FechaSolicitud"]</td>
-                </tr>
+                    <tr>
+                        <td>@row["IdSolicitud"]</td>
+                        <td>@row["IdEmpleado"]</td>
+                        <td>@row["Motivo"]</td>
+                        <td>@row["FechaInicio"]</td>
+                        <td>@row["FechaFin"]</td>
+                        <td>@row["Estado"]</td>
+                        <td>@row["FechaSolicitud"]</td>
+                    </tr>
                 }
             </tbody>
         </table>

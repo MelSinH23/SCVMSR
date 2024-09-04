@@ -11,7 +11,8 @@ namespace SCVMSR.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class Empleados
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -35,8 +36,10 @@ namespace SCVMSR.Models
         public int Saldo { get; set; }
         public string FileName { get; set; }
         public byte[] ImageData { get; set; }
+        public decimal Salario { get; set; }
 
-        public string Foto { get; set; }
+        [NotMapped]
+        public decimal ValorDiasDisfrute { get; set; }
 
         public virtual Departamentos Departamentos { get; set; }
         public virtual Puestos Puestos { get; set; }

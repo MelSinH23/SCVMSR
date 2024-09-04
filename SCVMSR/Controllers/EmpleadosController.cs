@@ -21,6 +21,11 @@ namespace SCVMSR.Controllers
         public ActionResult Index()
         {
             var empleados = db.Empleados.Include(e => e.Departamentos).Include(e => e.Puestos);
+            //foreach (var empleado in empleados)
+            //{
+            //    // Llamar al procedimiento almacenado para calcular ValorDiasDisfrute
+            //    empleado.ValorDiasDisfrute = CalcularValorDiasDisfrute(empleado.IdEmpleado);
+            //}
             return View(empleados.ToList());
         }
 
@@ -108,14 +113,26 @@ namespace SCVMSR.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdEmpleado,Nombre,SegundoNombre,PrimerApellido,SegundoApellido,FechaNacimiento,FechaContratacion,IdDepartamento,IdPuesto,CorreoElectronico,Telefono,Estado,Saldo,FileName,ImageData")] Empleados empleados)
+        public ActionResult Edit([Bind(Include = "IdEmpleado,Nombre,SegundoNombre,PrimerApellido,SegundoApellido,FechaNacimiento,FechaContratacion,IdDepartamento,IdPuesto,CorreoElectronico,Telefono,Estado,Saldo,FileName,ImageData")] Empleados empleados, HttpPostedFileBase imagenFile)
         {
             if (ModelState.IsValid)
             {
+                // Guardar el archivo en el servidor
+                if (imagenFile != null && imagenFile.ContentLength > 0)
+                {
+                    // Guardar la imagen en la carpeta deseada
+                    var imagePath = Path.Combine(Server.MapPath("~/FotosEmpleados/"), Path.GetFileName(imagenFile.FileName));
+                    imagenFile.SaveAs(imagePath);
+
+                    // Asignar el nombre de la imagen al modelo
+                    empleados.FileName = imagenFile.FileName;
+                }
+
                 db.Entry(empleados).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             ViewBag.IdDepartamento = new SelectList(db.Departamentos, "IdDepartamento", "Nombre", empleados.IdDepartamento);
             ViewBag.IdPuesto = new SelectList(db.Puestos, "IdPuesto", "Nombre", empleados.IdPuesto);
             return View(empleados);
@@ -245,5 +262,37 @@ namespace SCVMSR.Controllers
 
             return dataTable;
         }
+
+        //private decimal CalcularValorDiasDisfrute(int IdEmpleado)
+        //{
+        //    decimal valorDiasDisfrute = 0;
+
+        //    // Llamar al procedimiento almacenado
+        //    var command = db.Database.Connection.CreateCommand();
+        //    command.CommandType = System.Data.CommandType.StoredProcedure;
+        //    command.CommandText = "CalcularValorDiasDisfrute";
+
+        //    // Añadir parámetros
+        //    var idParam = command.CreateParameter();
+        //    idParam.ParameterName = "@IdEmpleado";
+        //    idParam.Value = IdEmpleado;
+        //    command.Parameters.Add(idParam);
+
+        //    var outputParam = command.CreateParameter();
+        //    outputParam.ParameterName = "@ValorDiasDisfrute";
+        //    outputParam.DbType = System.Data.DbType.Decimal;
+        //    outputParam.Direction = System.Data.ParameterDirection.Output;
+        //    command.Parameters.Add(outputParam);
+
+        //    // Ejecutar el procedimiento almacenado
+        //    db.Database.Connection.Open();
+        //    command.ExecuteNonQuery();
+        //    db.Database.Connection.Close();
+
+        //    // Obtener el valor de salida
+        //    valorDiasDisfrute = (decimal)outputParam.Value;
+
+        //    return valorDiasDisfrute;
+        //}
     }
 }

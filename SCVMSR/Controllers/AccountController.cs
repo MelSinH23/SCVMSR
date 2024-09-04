@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -421,6 +422,18 @@ namespace SCVMSR.Controllers
             }
 
             base.Dispose(disposing);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize] // Asegúrate de que el usuario esté autenticado
+        public ActionResult Logout()
+        {
+            // Cierra la sesión del usuario
+            FormsAuthentication.SignOut();
+
+            // Redirige a la página de inicio o a una página específica después del cierre de sesión
+            return RedirectToAction("Login", "Account");
         }
 
         #region Aplicaciones auxiliares

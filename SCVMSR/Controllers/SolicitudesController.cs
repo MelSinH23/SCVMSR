@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using SCVMSR.Models;
+
 
 namespace SCVMSR.Controllers
 {
@@ -174,6 +179,113 @@ namespace SCVMSR.Controllers
 
             return dataTable;
         }
+
+        public ActionResult ImprimirResumenMesAnteriorPDF()
+        {
+            // Establece la conexión a la base de datos
+            string connectionString = "Server=localhost\\sqlexpress;Database=SCVMSR;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True;";
+
+            // La ruta de guardado del archivo PDF
+            string rutaGuardado = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads\\";
+            string fechaHoraActual = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            string nombrePDF = "ResumenMesAnterior_" + fechaHoraActual + ".pdf";
+
+            // Crear el documento PDF
+            Document doc = new Document(PageSize.A4, 50, 50, 50, 50);
+            using (FileStream fs = new FileStream(Path.Combine(rutaGuardado, nombrePDF), FileMode.Create))
+            {
+                PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+                doc.Open();
+
+                // Agregar logo en la esquina superior izquierda
+                string logoPath = Server.MapPath("~/Content/assets/img/logo.png"); // Ajusta la ruta del logo según corresponda
+                iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(logoPath);
+                logo.ScaleAbsolute(50f, 50f); // Ajusta el tamaño del logo si es necesario
+                logo.SetAbsolutePosition(40, doc.PageSize.Height - 60); // Ajusta la posición según sea necesario
+                doc.Add(logo);
+
+                // Encabezado del PDF
+                PdfPTable headerTable = new PdfPTable(1);
+                headerTable.WidthPercentage = 100;
+                PdfPCell cell = new PdfPCell(new Phrase("RESUMEN DE SOLICITUDES DEL MES ANTERIOR", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16, BaseColor.BLACK)));
+                cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell.Border = Rectangle.NO_BORDER;
+                headerTable.AddCell(cell);
+                doc.Add(headerTable);
+
+                // Espacio
+                doc.Add(new Paragraph("\n"));
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand("GenerarResumenMesAnteriorPDF", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
+                        {
+                            DataTable dataTable = new DataTable();
+                            dataAdapter.Fill(dataTable);
+
+                            if (dataTable.Rows.Count > 0)
+                            {
+                                // Crear la tabla con un ancho fijo para las columnas
+                                PdfPTable table = new PdfPTable(7); // Número de columnas en la tabla
+                                table.WidthPercentage = 100;
+                                table.SpacingBefore = 10f;
+                                table.SpacingAfter = 10f;
+
+                                // Definir el tamaño de las columnas
+                                table.SetWidths(new float[] { 1f, 3f, 2f, 2f, 2f, 2f, 2f }); // Ajustar los tamaños de las columnas
+
+                                // Añadir encabezados de la tabla
+                                string[] headers = { "ID", "Nombre Completo", "Puesto", "Fecha Inicio", "Fecha Fin", "Días Solicitados", "Fecha Solicitud" };
+                                foreach (var header in headers)
+                                {
+                                    PdfPCell headerCell = new PdfPCell(new Phrase(header, FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.WHITE)));
+                                    headerCell.BackgroundColor = BaseColor.GRAY;
+                                    headerCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                                    headerCell.Padding = 5f;
+                                    table.AddCell(headerCell);
+                                }
+
+                                // Añadir los datos de las solicitudes
+                                foreach (DataRow row in dataTable.Rows)
+                                {
+                                    table.AddCell(row["IdSolicitud"].ToString());
+                                    table.AddCell(row["NombreCompleto"].ToString());
+                                    table.AddCell(row["Puesto"].ToString());
+                                    table.AddCell(Convert.ToDateTime(row["FechaInicio"]).ToString("dd/MM/yyyy"));
+                                    table.AddCell(Convert.ToDateTime(row["FechaFin"]).ToString("dd/MM/yyyy"));
+                                    table.AddCell(row["DiasSolicitados"].ToString());
+                                    table.AddCell(Convert.ToDateTime(row["FechaSolicitud"]).ToString("dd/MM/yyyy"));
+                                }
+
+                                doc.Add(table);
+                            }
+                            else
+                            {
+                                doc.Add(new Paragraph("No hay solicitudes registradas en el mes anterior."));
+                            }
+                        }
+                    }
+                }
+
+                // Footer del PDF
+                doc.Add(new Paragraph("\n"));
+                Paragraph footer = new Paragraph("Este es un resumen de todas las solicitudes realizadas en el mes anterior.", FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.BLACK));
+                footer.Alignment = Element.ALIGN_CENTER;
+                doc.Add(footer);
+
+                doc.Close();
+            }
+
+            // Retornar la vista o descargar directamente el PDF
+            return File(Path.Combine(rutaGuardado, nombrePDF), "application/pdf", nombrePDF);
+        }
+
+
 
         private void DescontarSaldo(int idSolicitud)
         {

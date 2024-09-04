@@ -31,6 +31,7 @@
           <Property Name="Saldo" Type="int" Nullable="false" />
           <Property Name="FileName" Type="nvarchar" MaxLength="200" />
           <Property Name="ImageData" Type="varbinary(max)" />
+          <Property Name="Salario" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="Puestos">
           <Key>
@@ -52,6 +53,18 @@
           <Property Name="Estado" Type="varchar" MaxLength="20" />
           <Property Name="FechaSolicitud" Type="date" />
         </EntityType>
+        <Association Name="FK__Empleados__IdDep__4E88ABD4">
+          <End Role="Departamentos" Type="Self.Departamentos" Multiplicity="0..1" />
+          <End Role="Empleados" Type="Self.Empleados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departamentos">
+              <PropertyRef Name="IdDepartamento" />
+            </Principal>
+            <Dependent Role="Empleados">
+              <PropertyRef Name="IdDepartamento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Empleados__IdPue__4F7CD00D">
           <End Role="Puestos" Type="Self.Puestos" Multiplicity="0..1" />
           <End Role="Empleados" Type="Self.Empleados" Multiplicity="*" />
@@ -61,18 +74,6 @@
             </Principal>
             <Dependent Role="Empleados">
               <PropertyRef Name="IdPuesto" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Empleados__Image__4E88ABD4">
-          <End Role="Departamentos" Type="Self.Departamentos" Multiplicity="0..1" />
-          <End Role="Empleados" Type="Self.Empleados" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Departamentos">
-              <PropertyRef Name="IdDepartamento" />
-            </Principal>
-            <Dependent Role="Empleados">
-              <PropertyRef Name="IdDepartamento" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -100,9 +101,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="CalcularValorDiasDisfrute" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdEmpleado" Type="int" Mode="In" />
+          <Parameter Name="ValorDiasDisfrute" Type="decimal" Mode="InOut" />
+        </Function>
         <Function Name="DescontarSaldo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdSolicitud" Type="int" Mode="In" />
         </Function>
+        <Function Name="GenerarResumenMesAnteriorPDF" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="MostrarEmpleados" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="MostrarEmpleadosActivos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="MostrarEmpleadosInactivos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -112,12 +118,12 @@
           <EntitySet Name="Empleados" EntityType="Self.Empleados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Puestos" EntityType="Self.Puestos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Solicitudes" EntityType="Self.Solicitudes" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Empleados__IdPue__4F7CD00D" Association="Self.FK__Empleados__IdPue__4F7CD00D">
-            <End Role="Puestos" EntitySet="Puestos" />
+          <AssociationSet Name="FK__Empleados__IdDep__4E88ABD4" Association="Self.FK__Empleados__IdDep__4E88ABD4">
+            <End Role="Departamentos" EntitySet="Departamentos" />
             <End Role="Empleados" EntitySet="Empleados" />
           </AssociationSet>
-          <AssociationSet Name="FK__Empleados__Image__4E88ABD4" Association="Self.FK__Empleados__Image__4E88ABD4">
-            <End Role="Departamentos" EntitySet="Departamentos" />
+          <AssociationSet Name="FK__Empleados__IdPue__4F7CD00D" Association="Self.FK__Empleados__IdPue__4F7CD00D">
+            <End Role="Puestos" EntitySet="Puestos" />
             <End Role="Empleados" EntitySet="Empleados" />
           </AssociationSet>
           <AssociationSet Name="FK__Puestos__IdDepar__4BAC3F29" Association="Self.FK__Puestos__IdDepar__4BAC3F29">
@@ -140,7 +146,7 @@
           </Key>
           <Property Name="IdDepartamento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Empleados" Relationship="Self.FK__Empleados__Image__4E88ABD4" FromRole="Departamentos" ToRole="Empleados" />
+          <NavigationProperty Name="Empleados" Relationship="Self.FK__Empleados__IdDep__4E88ABD4" FromRole="Departamentos" ToRole="Empleados" />
           <NavigationProperty Name="Puestos" Relationship="Self.FK__Puestos__IdDepar__4BAC3F29" FromRole="Departamentos" ToRole="Puestos" />
         </EntityType>
         <EntityType Name="Empleados">
@@ -162,7 +168,8 @@
           <Property Name="Saldo" Type="Int32" Nullable="false" />
           <Property Name="FileName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <NavigationProperty Name="Departamentos" Relationship="Self.FK__Empleados__Image__4E88ABD4" FromRole="Empleados" ToRole="Departamentos" />
+          <Property Name="Salario" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Departamentos" Relationship="Self.FK__Empleados__IdDep__4E88ABD4" FromRole="Empleados" ToRole="Departamentos" />
           <NavigationProperty Name="Puestos" Relationship="Self.FK__Empleados__IdPue__4F7CD00D" FromRole="Empleados" ToRole="Puestos" />
           <NavigationProperty Name="Solicitudes" Relationship="Self.FK__Solicitud__IdEmp__52593CB8" FromRole="Empleados" ToRole="Solicitudes" />
         </EntityType>
@@ -189,7 +196,7 @@
           <Property Name="FechaSolicitud" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Empleados" Relationship="Self.FK__Solicitud__IdEmp__52593CB8" FromRole="Solicitudes" ToRole="Empleados" />
         </EntityType>
-        <Association Name="FK__Empleados__Image__4E88ABD4">
+        <Association Name="FK__Empleados__IdDep__4E88ABD4">
           <End Role="Departamentos" Type="Self.Departamentos" Multiplicity="0..1" />
           <End Role="Empleados" Type="Self.Empleados" Multiplicity="*" />
           <ReferentialConstraint>
@@ -242,7 +249,7 @@
           <EntitySet Name="Empleados" EntityType="Self.Empleados" />
           <EntitySet Name="Puestos" EntityType="Self.Puestos" />
           <EntitySet Name="Solicitudes" EntityType="Self.Solicitudes" />
-          <AssociationSet Name="FK__Empleados__Image__4E88ABD4" Association="Self.FK__Empleados__Image__4E88ABD4">
+          <AssociationSet Name="FK__Empleados__IdDep__4E88ABD4" Association="Self.FK__Empleados__IdDep__4E88ABD4">
             <End Role="Departamentos" EntitySet="Departamentos" />
             <End Role="Empleados" EntitySet="Empleados" />
           </AssociationSet>
@@ -258,14 +265,28 @@
             <End Role="Empleados" EntitySet="Empleados" />
             <End Role="Solicitudes" EntitySet="Solicitudes" />
           </AssociationSet>
+          <FunctionImport Name="CalcularValorDiasDisfrute">
+            <Parameter Name="IdEmpleado" Mode="In" Type="Int32" />
+            <Parameter Name="ValorDiasDisfrute" Mode="InOut" Type="Decimal" />
+          </FunctionImport>
           <FunctionImport Name="DescontarSaldo">
             <Parameter Name="IdSolicitud" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="GenerarResumenMesAnteriorPDF" ReturnType="Collection(SCVMSRModel.GenerarResumenMesAnteriorPDF_Result)" />
           <FunctionImport Name="MostrarEmpleados" ReturnType="Collection(SCVMSRModel.MostrarEmpleados_Result)" />
           <FunctionImport Name="MostrarEmpleadosActivos" ReturnType="Collection(SCVMSRModel.MostrarEmpleadosActivos_Result)" />
           <FunctionImport Name="MostrarEmpleadosInactivos" ReturnType="Collection(SCVMSRModel.MostrarEmpleadosInactivos_Result)" />
           <FunctionImport Name="MostrarSolicitudesMesAnterior" ReturnType="Collection(SCVMSRModel.MostrarSolicitudesMesAnterior_Result)" />
         </EntityContainer>
+        <ComplexType Name="GenerarResumenMesAnteriorPDF_Result">
+          <Property Type="Int32" Name="IdSolicitud" Nullable="false" />
+          <Property Type="String" Name="NombreCompleto" Nullable="false" MaxLength="302" />
+          <Property Type="String" Name="Puesto" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="FechaInicio" Nullable="true" />
+          <Property Type="DateTime" Name="FechaFin" Nullable="true" />
+          <Property Type="Int32" Name="DiasSolicitados" Nullable="true" />
+          <Property Type="DateTime" Name="FechaSolicitud" Nullable="true" />
+        </ComplexType>
         <ComplexType Name="MostrarEmpleados_Result">
           <Property Type="String" Name="NombreCompleto" Nullable="false" MaxLength="302" />
           <Property Type="String" Name="Puesto" Nullable="false" MaxLength="100" />
@@ -325,6 +346,7 @@
                 <ScalarProperty Name="Saldo" ColumnName="Saldo" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -350,7 +372,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CalcularValorDiasDisfrute" FunctionName="SCVMSRModel.Store.CalcularValorDiasDisfrute" />
           <FunctionImportMapping FunctionImportName="DescontarSaldo" FunctionName="SCVMSRModel.Store.DescontarSaldo" />
+          <FunctionImportMapping FunctionImportName="GenerarResumenMesAnteriorPDF" FunctionName="SCVMSRModel.Store.GenerarResumenMesAnteriorPDF">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SCVMSRModel.GenerarResumenMesAnteriorPDF_Result">
+                <ScalarProperty Name="IdSolicitud" ColumnName="IdSolicitud" />
+                <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+                <ScalarProperty Name="DiasSolicitados" ColumnName="DiasSolicitados" />
+                <ScalarProperty Name="FechaSolicitud" ColumnName="FechaSolicitud" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="MostrarEmpleados" FunctionName="SCVMSRModel.Store.MostrarEmpleados">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SCVMSRModel.MostrarEmpleados_Result">

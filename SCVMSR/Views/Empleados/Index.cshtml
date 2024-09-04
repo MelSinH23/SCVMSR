@@ -14,7 +14,7 @@
 <table class="table datatable col">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Foto)
+            Foto
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
@@ -37,12 +37,10 @@
         <th>
             @Html.DisplayNameFor(model => model.Saldo)
         </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.FileName)
-        </th>
         <th>
-            @Html.DisplayNameFor(model => model.ImageData)
-        </th>*@
+            Valor del Saldo
+        </th>
+        
         <th>
             @Html.DisplayNameFor(model => model.Departamentos.Nombre)
         </th>
@@ -86,8 +84,7 @@
         @Html.DisplayFor(modelItem => item.Puestos.Nombre)
     </td>
     <td>
-        @Html.ActionLink("Editar", "Edit", new { id = item.IdEmpleado }) |
-        @Html.ActionLink("Detalles", "Details", new { id = item.IdEmpleado })
+        @Html.ActionLink("Editar", "Edit", new { id = item.IdEmpleado })
     </td>
 </tr>
     }

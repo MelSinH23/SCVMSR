@@ -32,6 +32,15 @@ namespace SCVMSR.Models
         public virtual DbSet<Puestos> Puestos { get; set; }
         public virtual DbSet<Solicitudes> Solicitudes { get; set; }
     
+        public virtual int CalcularValorDiasDisfrute(Nullable<int> idEmpleado, ObjectParameter valorDiasDisfrute)
+        {
+            var idEmpleadoParameter = idEmpleado.HasValue ?
+                new ObjectParameter("IdEmpleado", idEmpleado) :
+                new ObjectParameter("IdEmpleado", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CalcularValorDiasDisfrute", idEmpleadoParameter, valorDiasDisfrute);
+        }
+    
         public virtual int DescontarSaldo(Nullable<int> idSolicitud)
         {
             var idSolicitudParameter = idSolicitud.HasValue ?
@@ -39,6 +48,11 @@ namespace SCVMSR.Models
                 new ObjectParameter("IdSolicitud", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DescontarSaldo", idSolicitudParameter);
+        }
+    
+        public virtual ObjectResult<GenerarResumenMesAnteriorPDF_Result> GenerarResumenMesAnteriorPDF()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GenerarResumenMesAnteriorPDF_Result>("GenerarResumenMesAnteriorPDF");
         }
     
         public virtual ObjectResult<MostrarEmpleados_Result> MostrarEmpleados()
