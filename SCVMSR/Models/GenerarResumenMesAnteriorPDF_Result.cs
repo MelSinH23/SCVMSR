@@ -13,9 +13,8 @@ namespace SCVMSR.Models
     
     public partial class GenerarResumenMesAnteriorPDF_Result
     {
-        public int IdSolicitud { get; set; }
+        public string Motivo { get; set; }
         public string NombreCompleto { get; set; }
-        public string Puesto { get; set; }
         public Nullable<System.DateTime> FechaInicio { get; set; }
         public Nullable<System.DateTime> FechaFin { get; set; }
         public Nullable<int> DiasSolicitados { get; set; }

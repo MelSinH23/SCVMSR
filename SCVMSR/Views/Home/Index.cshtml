@@ -1,29 +1,32 @@
-﻿
-
-@{
+﻿@{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body pb-4">
-                    <h5 class="card-title">Bienvenido al Control de Vacaciones</h5>
-                    <p style="font-size: 15px">Seleccione desde los botones a continuación o la izquierda de su pantalla</p>
+        <div class="col-12 col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title mb-4 display-2">Control de Vacaciones</h5>
+                    <p class="lead">Bienvenido al sistema de Control de Vacaciones</p>
+                    <p>Seleccione una de las opciones a continuación o desde el menú a la izquierda de su pantalla.</p>
                     <hr />
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-auto">
-                                <button class="btn btn-primary mb-2" href="@Url.Action("MesAnterior", "Solicitudes")">Solicitudes del mes anterior</button>
-                            </div>
-                            <div class="col-auto">
-                                <button class="btn btn-primary mb-2" href="@Url.Action("Index", "Empleados")">Resumen de los Funcionarios</button>
-                            </div>
-                            <div class="col-auto">
-                                <button class="btn btn-primary mb-2" href="@Url.Action("Index", "Solicitudes")">Resumen de las Solicitudes</button>
-                            </div>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12 col-md-8 col-lg-6 mb-3">
+                            <a class="btn btn-primary btn-block fs-4" href="@Url.Action("MesAnterior", "Solicitudes")">
+                                <i class="fas fa-calendar-alt"></i> Resumen de Solicitudes del Mes Anterior
+                            </a>
+                        </div>
+                        <div class="col-sm-12 col-md-8 col-lg-6 mb-3">
+                            <a class="btn btn-success btn-block fs-4" href="@Url.Action("Index", "Empleados")">
+                                <i class="fas fa-users"></i> Listado Completo de Empleados
+                            </a>
+                        </div>
+                        <div class="col-sm-12 col-md-8 col-lg-6">
+                            <a class="btn btn-info btn-block fs-4" href="@Url.Action("Index", "Solicitudes")">
+                                <i class="fas fa-file-alt"></i> Resumen de Solicitudes
+                            </a>
                         </div>
                     </div>
                 </div>

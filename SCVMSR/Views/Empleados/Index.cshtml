@@ -9,7 +9,8 @@
 
 
 <p>
-    @Html.ActionLink("Crear Nuevo Funcionario", "Create")
+    @Html.ActionLink("Crear Nuevo Funcionario", "Create", new { }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Cargar excel", "CargarEmpleados", "Empleados", new { }, new { @class = "btn btn-primary" })
 </p>
 <table class="table datatable col">
     <tr>
@@ -18,6 +19,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cedula)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FechaNacimiento)
@@ -38,9 +42,12 @@
             @Html.DisplayNameFor(model => model.Saldo)
         </th>
         <th>
-            Valor del Saldo
+            @Html.DisplayNameFor(model => model.Salario)
         </th>
-        
+        <th>
+            Valor
+        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.Departamentos.Nombre)
         </th>
@@ -54,10 +61,18 @@
     {
 <tr>
     <td>
-        <img src="@Url.Content("~/FotosEmpleados/" + item.FileName)" alt="Imagen" width="100" height="100" />
+        @*<img src="@Url.Content("~/FotosEmpleados/" + item.FileName)" alt="Imagen" width="100" height="100" />*@
+        <img src="@Url.Content((item.FileName != null && System.IO.File.Exists(Server.MapPath("~/FotosEmpleados/") + item.FileName))
+                ? "~/FotosEmpleados/" + item.FileName
+                : "~/Content/DefaultImages/default.jpg")"
+             alt="Foto del empleado"
+             style="width: 100px; height: 100px;" />
     </td>
     <td>
         @string.Concat(item.Nombre, " ", item.SegundoNombre, " ", item.PrimerApellido)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Cedula)
     </td>
     <td>
         @Html.DisplayFor(modelItem => item.FechaNacimiento)
@@ -76,6 +91,12 @@
     </td>
     <td>
         @Html.DisplayFor(modelItem => item.Saldo)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Salario)
+    </td>
+    <td>
+        @(item.Salario / 30 * item.Saldo)
     </td>
     <td>
         @Html.DisplayFor(modelItem => item.Departamentos.Nombre)

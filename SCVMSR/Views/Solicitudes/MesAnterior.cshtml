@@ -15,11 +15,11 @@
         <table class="table table-striped datatable">
             <thead>
                 <tr>
-                    <th class="text-center">Solicitud</th>
-                    <th class="text-center">Empleado</th>
+                    <th class="text-center">Nombre</th>
                     <th class="text-center">Motivo</th>
                     <th class="text-center">Fecha de Inicio</th>
                     <th class="text-center">Fecha de Finalización</th>
+                    <th class="text-center">Total de Días</th>
                     <th class="text-center">Estado</th>
                     <th class="text-center">Fecha de Solicitud</th>
                 </tr>
@@ -27,15 +27,15 @@
             <tbody>
                 @foreach (System.Data.DataRow row in solicitudesMesAnt.Rows)
                 {
-                    <tr>
-                        <td>@row["IdSolicitud"]</td>
-                        <td>@row["IdEmpleado"]</td>
-                        <td>@row["Motivo"]</td>
-                        <td>@row["FechaInicio"]</td>
-                        <td>@row["FechaFin"]</td>
-                        <td>@row["Estado"]</td>
-                        <td>@row["FechaSolicitud"]</td>
-                    </tr>
+                <tr>
+                    <td>@row["NombreCompleto"]</td>
+                    <td>@row["Motivo"]</td>
+                    <td>@row["FechaInicio"]</td>
+                    <td>@row["FechaFin"]</td>
+                    <td>@row["DiasSolicitados"]</td>
+                    <td>@row["Estado"]</td>
+                    <td>@row["FechaSolicitud"]</td>
+                </tr>
                 }
             </tbody>
         </table>

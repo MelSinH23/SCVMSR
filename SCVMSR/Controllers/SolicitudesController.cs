@@ -237,10 +237,10 @@ namespace SCVMSR.Controllers
                                 table.SpacingAfter = 10f;
 
                                 // Definir el tamaño de las columnas
-                                table.SetWidths(new float[] { 1f, 3f, 2f, 2f, 2f, 2f, 2f }); // Ajustar los tamaños de las columnas
+                                table.SetWidths(new float[] { 3f, 4f, 2f, 2f, 2f, 2f, 2f }); // Ajustar los tamaños de las columnas
 
                                 // Añadir encabezados de la tabla
-                                string[] headers = { "ID", "Nombre Completo", "Puesto", "Fecha Inicio", "Fecha Fin", "Días Solicitados", "Fecha Solicitud" };
+                                string[] headers = { "Motivo", "Nombre Completo", "Fecha Inicio", "Fecha Fin", "Días Solicitados", "Fecha Solicitud", "Estado" };
                                 foreach (var header in headers)
                                 {
                                     PdfPCell headerCell = new PdfPCell(new Phrase(header, FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.WHITE)));
@@ -253,13 +253,13 @@ namespace SCVMSR.Controllers
                                 // Añadir los datos de las solicitudes
                                 foreach (DataRow row in dataTable.Rows)
                                 {
-                                    table.AddCell(row["IdSolicitud"].ToString());
+                                    table.AddCell(row["Motivo"].ToString());
                                     table.AddCell(row["NombreCompleto"].ToString());
-                                    table.AddCell(row["Puesto"].ToString());
                                     table.AddCell(Convert.ToDateTime(row["FechaInicio"]).ToString("dd/MM/yyyy"));
                                     table.AddCell(Convert.ToDateTime(row["FechaFin"]).ToString("dd/MM/yyyy"));
                                     table.AddCell(row["DiasSolicitados"].ToString());
                                     table.AddCell(Convert.ToDateTime(row["FechaSolicitud"]).ToString("dd/MM/yyyy"));
+                                    table.AddCell(row["Estado"].ToString()); // Añadir el estado de la solicitud
                                 }
 
                                 doc.Add(table);
@@ -284,7 +284,6 @@ namespace SCVMSR.Controllers
             // Retornar la vista o descargar directamente el PDF
             return File(Path.Combine(rutaGuardado, nombrePDF), "application/pdf", nombrePDF);
         }
-
 
 
         private void DescontarSaldo(int idSolicitud)

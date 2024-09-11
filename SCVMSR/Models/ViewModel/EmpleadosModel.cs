@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -15,6 +16,10 @@ namespace SCVMSR.Models.ViewModel
         [StringLength(100, ErrorMessage = "El nombre debe ser de 100 máximo.")]
         public string Nombre { get; set; }
 
+        [Display(Name = "Cédula")]
+        [StringLength(100, ErrorMessage = "La cédula debe ser de 100 máximo.")]
+        public string Cedula { get; set; }
+
         [Display(Name = "Segundo Nombre")]
         [StringLength(100, ErrorMessage = "El segundo nombre debe ser de 100 máximo.")]
         public string SegundoNombre { get; set; }
@@ -26,7 +31,16 @@ namespace SCVMSR.Models.ViewModel
         [Display(Name = "Segundo Apellido")]
         [StringLength(100, ErrorMessage = "El segundo apellido debe ser de 100 máximo.")]
         public string SegundoApellido { get; set; }
+
+        [Display(Name = "Fecha Nacimiento")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public Nullable<System.DateTime> FechaNacimiento { get; set; }
+
+        [Display(Name = "Fecha Contratación")]
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public Nullable<System.DateTime> FechaContratacion { get; set; }
         public Nullable<int> IdDepartamento { get; set; }
         public Nullable<int> IdPuesto { get; set; }
@@ -34,20 +48,30 @@ namespace SCVMSR.Models.ViewModel
         [EmailAddress]
         [Display(Name = "Correo")]
         [StringLength(50, ErrorMessage = "El correo debe ser de 50 máximo.")]
+        [CorreoExiste(ErrorMessage = "El correo ya existe.")]
         public string CorreoElectronico { get; set; }
 
         [Display(Name = "Teléfono")]
-        [StringLength(8, ErrorMessage = "El correo debe ser de 8 máximo.")]
+        [StringLength(8, ErrorMessage = "El teléfono debe ser de 8 máximo.")]
+        [RegularExpression(@"^\d{8}$", ErrorMessage = "El teléfono debe contener solo números y tener exactamente 8 dígitos.")]
         public string Telefono { get; set; }
         public Nullable<bool> Estado { get; set; }
 
         [Display(Name = "Saldo")]
-        [StringLength(20, ErrorMessage = "El saldo debe ser de 20 máximo.")]
         public int Saldo { get; set; }
-
-        [Display(Name = "Nombre del Archivo")]
         public string FileName { get; set; }
         public byte[] ImageData { get; set; }
+
+        [Range(0, 10000000, ErrorMessage = "El saldo debe ser un valor entre 0 y 10,000,000.")]
+        public decimal Salario { get; set; }
+
+        [NotMapped] // Este atributo indica que este campo no se almacenará en la base de datos
+        public decimal ValorDiasSaldo { get; set; }
+
+        public virtual Departamentos Departamentos { get; set; }
+        public virtual Puestos Puestos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Solicitudes> Solicitudes { get; set; }
 
         public class CorreoExiste : ValidationAttribute
         {

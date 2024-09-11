@@ -18,6 +18,7 @@
           </Key>
           <Property Name="IdEmpleado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Cedula" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="SegundoNombre" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PrimerApellido" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="SegundoApellido" Type="varchar" MaxLength="100" Nullable="false" />
@@ -155,6 +156,7 @@
           </Key>
           <Property Name="IdEmpleado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cedula" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="SegundoNombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PrimerApellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="SegundoApellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
@@ -279,9 +281,8 @@
           <FunctionImport Name="MostrarSolicitudesMesAnterior" ReturnType="Collection(SCVMSRModel.MostrarSolicitudesMesAnterior_Result)" />
         </EntityContainer>
         <ComplexType Name="GenerarResumenMesAnteriorPDF_Result">
-          <Property Type="Int32" Name="IdSolicitud" Nullable="false" />
+          <Property Type="String" Name="Motivo" Nullable="true" MaxLength="250" />
           <Property Type="String" Name="NombreCompleto" Nullable="false" MaxLength="302" />
-          <Property Type="String" Name="Puesto" Nullable="false" MaxLength="100" />
           <Property Type="DateTime" Name="FechaInicio" Nullable="true" />
           <Property Type="DateTime" Name="FechaFin" Nullable="true" />
           <Property Type="Int32" Name="DiasSolicitados" Nullable="true" />
@@ -333,6 +334,7 @@
               <MappingFragment StoreEntitySet="Empleados">
                 <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Cedula" ColumnName="Cedula" />
                 <ScalarProperty Name="SegundoNombre" ColumnName="SegundoNombre" />
                 <ScalarProperty Name="PrimerApellido" ColumnName="PrimerApellido" />
                 <ScalarProperty Name="SegundoApellido" ColumnName="SegundoApellido" />
@@ -377,9 +379,8 @@
           <FunctionImportMapping FunctionImportName="GenerarResumenMesAnteriorPDF" FunctionName="SCVMSRModel.Store.GenerarResumenMesAnteriorPDF">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SCVMSRModel.GenerarResumenMesAnteriorPDF_Result">
-                <ScalarProperty Name="IdSolicitud" ColumnName="IdSolicitud" />
+                <ScalarProperty Name="Motivo" ColumnName="Motivo" />
                 <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
-                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
                 <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
                 <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
                 <ScalarProperty Name="DiasSolicitados" ColumnName="DiasSolicitados" />

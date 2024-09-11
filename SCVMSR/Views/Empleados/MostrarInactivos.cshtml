@@ -13,7 +13,6 @@
         <table class="table table-striped datatable">
             <thead>
                 <tr>
-                    <th class="text-center">Foto</th>
                     <th class="text-center">Nombre Completo</th>
                     <th class="text-center">Puesto</th>
                     <th class="text-center">Fecha de Contratación</th>
@@ -24,12 +23,10 @@
                 @foreach (System.Data.DataRow row in empleadosInactivos.Rows)
                 {
                     <tr>
-                        <td>Foto</td>
                         <td>@row["NombreCompleto"]</td>
                         <td>@row["Puesto"]</td>
                         <td>@row["FechaContratacion"]</td>
                         <td>@row["Saldo"]</td>
-                        @*<td>@row["Nombre_Empleado"] @row["Apellido_Empleado"] </td>*@
                         <td>
                     </tr>
                 }
