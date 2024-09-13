@@ -90,7 +90,6 @@ namespace SCVMSR.Controllers
             return View(departamentos);
         }
 
-        // GET: Departamentos/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -111,6 +110,15 @@ namespace SCVMSR.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Departamentos departamentos = db.Departamentos.Find(id);
+
+            // Verificar si el departamento está siendo utilizado por algún empleado
+            if (db.Empleados.Any(e => e.IdDepartamento == id))
+            {
+                // Mostrar un mensaje de error y no eliminar el registro
+                TempData["ErrorMessage"] = "No se puede eliminar el departamento porque está asociado a uno o más empleados.";
+                return RedirectToAction("Index");
+            }
+
             db.Departamentos.Remove(departamentos);
             db.SaveChanges();
             return RedirectToAction("Index");

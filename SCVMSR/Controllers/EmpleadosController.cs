@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -119,20 +120,60 @@ namespace SCVMSR.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Guardar el archivo en el servidor
-                if (imagenFile != null && imagenFile.ContentLength > 0)
+                try
                 {
-                    // Guardar la imagen en la carpeta deseada
-                    var imagePath = Path.Combine(Server.MapPath("~/FotosEmpleados/"), Path.GetFileName(imagenFile.FileName));
-                    imagenFile.SaveAs(imagePath);
+                    // Obtener el empleado existente de la base de datos
+                    var empleadoExistente = db.Empleados.Find(empleados.IdEmpleado);
 
-                    // Asignar el nombre de la imagen al modelo
-                    empleados.FileName = imagenFile.FileName;
+                    if (empleadoExistente == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    // Verificar si se ha subido un nuevo archivo
+                    if (imagenFile != null && imagenFile.ContentLength > 0)
+                    {
+                        // Guardar la nueva imagen en la carpeta deseada
+                        var imagePath = Path.Combine(Server.MapPath("~/FotosEmpleados/"), Path.GetFileName(imagenFile.FileName));
+                        imagenFile.SaveAs(imagePath);
+
+                        // Asignar el nombre de la imagen al modelo
+                        empleados.FileName = imagenFile.FileName;
+                    }
+                    else
+                    {
+                        // Si no se subió una nueva imagen, conservar la imagen existente
+                        empleados.FileName = empleadoExistente.FileName;
+                    }
+
+                    // Convertir salario a formato decimal adecuado (reemplazar coma por punto si es necesario)
+                    if (!string.IsNullOrEmpty(empleados.Salario.ToString()))
+                    {
+                        var salarioString = empleados.Salario.ToString(CultureInfo.InvariantCulture).Replace(',', '.');
+                        empleados.Salario = decimal.Parse(salarioString, CultureInfo.InvariantCulture);
+                    }
+
+                    // Actualizar las propiedades del empleado sin sobrescribir la foto si no se proporciona una nueva
+                    db.Entry(empleadoExistente).CurrentValues.SetValues(empleados);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
+                catch (DbEntityValidationException ex)
+                {
+                    // Capturar los errores de validación y agregarlos al ModelState
+                    var validationErrors = ex.EntityValidationErrors
+                        .SelectMany(eve => eve.ValidationErrors)
+                        .Select(ve => $"{ve.PropertyName}: {ve.ErrorMessage}")
+                        .ToList();
 
-                db.Entry(empleados).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    // Agregar los errores al ModelState para mostrarlos en la vista
+                    ModelState.AddModelError("", "Error de validación: " + string.Join(", ", validationErrors));
+                }
+                catch (Exception ex)
+                {
+                    // Manejo de excepciones generales
+                    ModelState.AddModelError("", "No se pudo guardar la información del empleado. Error: " + ex.Message);
+                }
             }
 
             ViewBag.IdDepartamento = new SelectList(db.Departamentos, "IdDepartamento", "Nombre", empleados.IdDepartamento);
@@ -140,8 +181,10 @@ namespace SCVMSR.Controllers
             return View(empleados);
         }
 
-        // GET: Empleados/Delete/5
-        public ActionResult Delete(int? id)
+
+
+    // GET: Empleados/Delete/5
+    public ActionResult Delete(int? id)
         {
             if (id == null)
             {

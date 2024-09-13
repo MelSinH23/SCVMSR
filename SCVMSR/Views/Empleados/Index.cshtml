@@ -12,104 +12,116 @@
     @Html.ActionLink("Crear Nuevo Funcionario", "Create", new { }, new { @class = "btn btn-primary" })
     @Html.ActionLink("Cargar excel", "CargarEmpleados", "Empleados", new { }, new { @class = "btn btn-primary" })
 </p>
-<table class="table datatable col">
-    <tr>
-        <th>
-            Foto
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Cedula)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaNacimiento)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaContratacion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CorreoElectronico)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Telefono)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Estado)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Saldo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Salario)
-        </th>
-        <th>
-            Valor
-        </th>
+<table class="table col datatable">
+    <thead>
+        <tr>
+            <th>
+                Foto
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cedula)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaNacimiento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaContratacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CorreoElectronico)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefono)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Saldo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salario)
+            </th>
+            <th>
+                Valor
+            </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model.Departamentos.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Puestos.Nombre)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-<tr>
-    <td>
-        @*<img src="@Url.Content("~/FotosEmpleados/" + item.FileName)" alt="Imagen" width="100" height="100" />*@
-        <img src="@Url.Content((item.FileName != null && System.IO.File.Exists(Server.MapPath("~/FotosEmpleados/") + item.FileName))
+            <th>
+                @Html.DisplayNameFor(model => model.Departamentos.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Puestos.Nombre)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @*<img src="@Url.Content("~/FotosEmpleados/" + item.FileName)" alt="Imagen" width="100" height="100" />*@
+                    <img src="@Url.Content((item.FileName != null && System.IO.File.Exists(Server.MapPath("~/FotosEmpleados/") + item.FileName))
                 ? "~/FotosEmpleados/" + item.FileName
                 : "~/Content/DefaultImages/default.jpg")"
-             alt="Foto del empleado"
-             style="width: 100px; height: 100px;" />
-    </td>
-    <td>
-        @string.Concat(item.Nombre, " ", item.SegundoNombre, " ", item.PrimerApellido)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Cedula)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.FechaNacimiento)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.FechaContratacion)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.CorreoElectronico)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Telefono)
-    </td>
-    <td>
-        @(item.Estado.HasValue ? (item.Estado.Value ? "Activo" : "Inactivo") : "Desconocido")
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Saldo)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Salario)
-    </td>
-    <td>
-        @(item.Salario / 30 * item.Saldo)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Departamentos.Nombre)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Puestos.Nombre)
-    </td>
-    <td>
-        @Html.ActionLink("Editar", "Edit", new { id = item.IdEmpleado })
-    </td>
-</tr>
-    }
+                         alt="Foto del empleado"
+                         style="width: 100px; height: 100px;" />
+                </td>
+                <td>
+                    @string.Concat(item.Nombre, " ", item.SegundoNombre, " ", item.PrimerApellido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cedula)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaNacimiento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaContratacion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CorreoElectronico)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefono)
+                </td>
+                <td>
+                    @(item.Estado.HasValue ? (item.Estado.Value ? "Activo" : "Inactivo") : "Desconocido")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Saldo)
+                </td>
+                <td>
+                    @String.Format("{0:N2}", item.Salario)
+                </td>
+                <td>
+                    @if (item.Saldo > 0)
+                    {
+                        var salarioDiario = item.Salario / 30;  // Salario dividido por 30 días.
+                        var valorDiasVacaciones = salarioDiario * item.Saldo;  // Multiplica por los días disponibles.
+                        @valorDiasVacaciones.ToString("N2") // Formato con 2 decimales.
+                    }
+                    else
+                    {
+                        @:0.00
+                    }
+                </td>
 
+                <td>
+                    @Html.DisplayFor(modelItem => item.Departamentos.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Puestos.Nombre)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.IdEmpleado }, new { @class = "btn btn-warning" })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 
     

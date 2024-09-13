@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<SCVMSR.Models.Solicitudes>
+@using SCVMSR.Views.Helpers
 
 @{
     ViewBag.Title = "Index";
@@ -20,7 +21,6 @@
         color: gray !important;
         font-weight: bold !important;
     }
-
 </style>
 
 <h2>Solicitudes</h2>
@@ -29,59 +29,60 @@
     @Html.ActionLink("Crear Nueva Solicitud", "Create", new { }, new { @class = "btn btn-primary" })
 </p>
 <table class="table datatable">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Empleados.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Motivo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaInicio)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaFin)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Estado)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaSolicitud)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-
+    <thead>
         <tr>
-            <td>
-                @string.Concat(item.Empleados.Nombre, " ", item.Empleados.SegundoNombre, " ", item.Empleados.PrimerApellido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Motivo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaInicio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaFin)
-            </td>
-            <td class="@(item.Estado == "Rechazada" ? "estado-rechazada" : item.Estado == "Aceptada" ? "estado-aceptada" : "estado-pendiente")">
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaSolicitud)
-            </td>
-            
-            <td>
-                @if (item.Estado != "Aceptada" && item.Estado != "Rechazada")
-                {
-                    <text>@Html.ActionLink("Editar", "Edit", new { id = item.IdSolicitud }) |</text>
-                    <text>@Html.ActionLink("Detalles", "Details", new { id = item.IdSolicitud })</text>
-                }
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Empleados.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Motivo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaFin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaSolicitud)
+            </th>
+            <th></th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
 
+            <tr>
+                <td>
+                    @string.Concat(item.Empleados.Nombre, " ", item.Empleados.SegundoNombre, " ", item.Empleados.PrimerApellido)
+                </td>
+                <td>
+                    @Html.MotivoTexto(item.Motivo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaInicio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaFin)
+                </td>
+                <td class="@(item.Estado == "Rechazada" ? "estado-rechazada" : item.Estado == "Aceptada" ? "estado-aceptada" : "estado-pendiente")">
+                    @Html.DisplayFor(modelItem => item.Estado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaSolicitud)
+                </td>
+
+                <td>
+                    @if (item.Estado != "Aceptada" && item.Estado != "Rechazada")
+                    {
+                        <text>@Html.ActionLink("Editar", "Edit", new { id = item.IdSolicitud }, new { @class = "btn btn-warning" })</text>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

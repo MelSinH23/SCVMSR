@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,6 +17,10 @@ namespace SCVMSR
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // Configuración global de cultura
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("es-ES");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("es-ES");
         }
     }
 }

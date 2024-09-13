@@ -30,16 +30,9 @@
                                       new SelectList(new List<SelectListItem>
                                       {
                                           new SelectListItem { Text = "Seleccione", Value = "", Selected = true },
-                                          new SelectListItem { Text = "Vacaciones", Value = "Vacaciones" },
-                                          new SelectListItem { Text = "Matrimonio", Value = "Matrimonio" },
-                                          new SelectListItem { Text = "Nacimiento de un hijo", Value = "NacimientoHijo" },
-                                          new SelectListItem { Text = "Enfermedad de un familiar", Value = "EnfermedadFamiliar" },
-                                          new SelectListItem { Text = "Licencia Médica", Value = "Médico" },
-                                          new SelectListItem { Text = "Emergencia Familiar", Value = "Emergencia" },
-                                          new SelectListItem { Text = "Mudanza", Value = "Mudanza" },
-                                          new SelectListItem { Text = "Luto", Value = "Luto" },
-                                          new SelectListItem { Text = "Maternidad/Paternidad", Value = "MaternidadPaternidad" },
-                                          new SelectListItem { Text = "Festividades Religiosas", Value = "Religion" }
+                                          new SelectListItem { Text = "Licencia Con Goce de Salario", Value = "LicConGoce" },
+                                          new SelectListItem { Text = "Licencia Sin Goce de Salario", Value = "LicSinGoce" },
+                                          new SelectListItem { Text = "Maternidad/Paternidad", Value = "MaternidadPaternidad" }
                                       }, "Value", "Text"),
                                       new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Motivo, "", new { @class = "text-danger" })
@@ -87,7 +80,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Crear" class="btn btn-default" />
+                <input type="submit" value="Crear" class="btn btn-primary" />
             </div>
         </div>
     </div>

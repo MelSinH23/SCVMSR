@@ -116,10 +116,20 @@ namespace SCVMSR.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Puestos puestos = db.Puestos.Find(id);
+
+            // Verificar si el puesto está siendo utilizado por algún empleado
+            if (db.Empleados.Any(e => e.IdPuesto == id))
+            {
+                // Mostrar un mensaje de error y no eliminar el registro
+                TempData["ErrorMessage"] = "No se puede eliminar el puesto porque está asociado a uno o más empleados.";
+                return RedirectToAction("Index");
+            }
+
             db.Puestos.Remove(puestos);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
 
         protected override void Dispose(bool disposing)
         {

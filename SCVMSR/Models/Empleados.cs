@@ -52,14 +52,12 @@ namespace SCVMSR.Models
         public Nullable<System.DateTime> FechaNacimiento { get; set; }
 
         [Display(Name = "Fecha Contratación")]
-
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public Nullable<System.DateTime> FechaContratacion { get; set; }
         public Nullable<int> IdDepartamento { get; set; }
         public Nullable<int> IdPuesto { get; set; }
 
-        [EmailAddress]
         [Display(Name = "Correo")]
         [StringLength(50, ErrorMessage = "El correo debe ser de 50 máximo.")]
         public string CorreoElectronico { get; set; }
@@ -75,13 +73,14 @@ namespace SCVMSR.Models
         public string FileName { get; set; }
         public byte[] ImageData { get; set; }
 
-        [Range(0, 10000000, ErrorMessage = "El saldo debe ser un valor entre 0 y 10,000,000.")]
+        [Range(0, 100000000, ErrorMessage = "El saldo debe ser un valor entre 0 y 100,000,000.")]
         public decimal Salario { get; set; }
 
         [NotMapped] // Este atributo indica que este campo no se almacenará en la base de datos
         public decimal ValorDiasSaldo { get; set; }
 
         public virtual Departamentos Departamentos { get; set; }
+
         public virtual Puestos Puestos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Solicitudes> Solicitudes { get; set; }

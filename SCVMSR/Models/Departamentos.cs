@@ -11,7 +11,8 @@ namespace SCVMSR.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Departamentos
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,8 +21,10 @@ namespace SCVMSR.Models
             this.Empleados = new HashSet<Empleados>();
             this.Puestos = new HashSet<Puestos>();
         }
-    
+        [Display(Name = "Departamento")]
         public int IdDepartamento { get; set; }
+
+        [Display(Name = "Nombre Departamento")]
         public string Nombre { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
