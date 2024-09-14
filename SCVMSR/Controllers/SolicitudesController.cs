@@ -59,17 +59,26 @@ namespace SCVMSR.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Solicitudes.Add(solicitudes);
-                db.SaveChanges();
-                // Verificar si la solicitud fue aprobada
-                if (solicitudes.Estado == "Aceptada")
+                // Verificar si el empleado está activo
+                var empleado = db.Empleados.Find(solicitudes.IdEmpleado);
+                if (empleado == null || empleado.Estado == false)
                 {
-                    // Llamar al procedimiento almacenado para descontar el saldo
-                    DescontarSaldo(solicitudes.IdSolicitud);
+                    // El empleado no existe o está inactivo
+                    ModelState.AddModelError("", "El empleado seleccionado está inactivo o no existe.");
                 }
-                return RedirectToAction("Index");
+                else
+                {
+                    db.Solicitudes.Add(solicitudes);
+                    db.SaveChanges();
+                    // Verificar si la solicitud fue aprobada
+                    if (solicitudes.Estado == "Aceptada")
+                    {
+                        // Llamar al procedimiento almacenado para descontar el saldo
+                        DescontarSaldo(solicitudes.IdSolicitud);
+                    }
+                    return RedirectToAction("Index");
+                }
             }
-
             ViewBag.IdEmpleado = new SelectList(db.Empleados, "IdEmpleado", "Nombre", solicitudes.IdEmpleado);
             return View(solicitudes);
         }
@@ -198,19 +207,34 @@ namespace SCVMSR.Controllers
                 doc.Open();
 
                 // Agregar logo en la esquina superior izquierda
-                string logoPath = Server.MapPath("~/Content/assets/img/logo.png"); // Ajusta la ruta del logo según corresponda
+                string logoPath = Server.MapPath("~/Content/assets/img/logomunicipalidad.png"); // Ajusta la ruta del logo según corresponda
                 iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(logoPath);
-                logo.ScaleAbsolute(50f, 50f); // Ajusta el tamaño del logo si es necesario
+                logo.ScaleAbsolute(65f, 65f); // Ajusta el tamaño del logo si es necesario
                 logo.SetAbsolutePosition(40, doc.PageSize.Height - 60); // Ajusta la posición según sea necesario
                 doc.Add(logo);
 
-                // Encabezado del PDF
+                doc.Add(new Paragraph("\n"));
+
+                // Encabezado de la empresa y detalles del reporte
                 PdfPTable headerTable = new PdfPTable(1);
                 headerTable.WidthPercentage = 100;
-                PdfPCell cell = new PdfPCell(new Phrase("RESUMEN DE SOLICITUDES DEL MES ANTERIOR", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16, BaseColor.BLACK)));
-                cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                cell.Border = Rectangle.NO_BORDER;
-                headerTable.AddCell(cell);
+
+                PdfPCell empresaCell = new PdfPCell(new Phrase("Municipalidad de San Rafael de Heredia\nSan Rafael de Heredia, Costa Rica", FontFactory.GetFont(FontFactory.HELVETICA, 12, BaseColor.BLACK)));
+                empresaCell.HorizontalAlignment = Element.ALIGN_LEFT;
+                empresaCell.Border = Rectangle.NO_BORDER;
+                headerTable.AddCell(empresaCell);
+
+                // Detalles del reporte
+                PdfPCell reporteCell = new PdfPCell(new Phrase("REPORTE DE SOLICITUDES DEL MES ANTERIOR", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.BLACK)));
+                reporteCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                reporteCell.Border = Rectangle.NO_BORDER;
+                headerTable.AddCell(reporteCell);
+
+                PdfPCell fechaReporteCell = new PdfPCell(new Phrase("Fecha del Reporte: " + DateTime.Now.ToString("dd/MM/yyyy"), FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.BLACK)));
+                fechaReporteCell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                fechaReporteCell.Border = Rectangle.NO_BORDER;
+                headerTable.AddCell(fechaReporteCell);
+
                 doc.Add(headerTable);
 
                 // Espacio
@@ -243,7 +267,7 @@ namespace SCVMSR.Controllers
                                 string[] headers = { "Motivo", "Nombre Completo", "Fecha Inicio", "Fecha Fin", "Días Solicitados", "Fecha Solicitud", "Estado" };
                                 foreach (var header in headers)
                                 {
-                                    PdfPCell headerCell = new PdfPCell(new Phrase(header, FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.WHITE)));
+                                    PdfPCell headerCell = new PdfPCell(new Phrase(header, FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 8, BaseColor.WHITE)));
                                     headerCell.BackgroundColor = BaseColor.GRAY;
                                     headerCell.HorizontalAlignment = Element.ALIGN_CENTER;
                                     headerCell.Padding = 5f;
@@ -253,13 +277,13 @@ namespace SCVMSR.Controllers
                                 // Añadir los datos de las solicitudes
                                 foreach (DataRow row in dataTable.Rows)
                                 {
-                                    table.AddCell(row["Motivo"].ToString());
-                                    table.AddCell(row["NombreCompleto"].ToString());
-                                    table.AddCell(Convert.ToDateTime(row["FechaInicio"]).ToString("dd/MM/yyyy"));
-                                    table.AddCell(Convert.ToDateTime(row["FechaFin"]).ToString("dd/MM/yyyy"));
-                                    table.AddCell(row["DiasSolicitados"].ToString());
-                                    table.AddCell(Convert.ToDateTime(row["FechaSolicitud"]).ToString("dd/MM/yyyy"));
-                                    table.AddCell(row["Estado"].ToString()); // Añadir el estado de la solicitud
+                                    table.AddCell(new PdfPCell(new Phrase(row["Motivo"].ToString(), FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK))));
+                                    table.AddCell(new PdfPCell(new Phrase(row["NombreCompleto"].ToString(), FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK))));
+                                    table.AddCell(new PdfPCell(new Phrase(Convert.ToDateTime(row["FechaInicio"]).ToString("dd/MM/yyyy"), FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK))));
+                                    table.AddCell(new PdfPCell(new Phrase(Convert.ToDateTime(row["FechaFin"]).ToString("dd/MM/yyyy"), FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK))));
+                                    table.AddCell(new PdfPCell(new Phrase(row["DiasSolicitados"].ToString(), FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK))));
+                                    table.AddCell(new PdfPCell(new Phrase(Convert.ToDateTime(row["FechaSolicitud"]).ToString("dd/MM/yyyy"), FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK))));
+                                    table.AddCell(new PdfPCell(new Phrase(row["Estado"].ToString(), FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK)))); // Añadir el estado de la solicitud
                                 }
 
                                 doc.Add(table);
@@ -272,9 +296,9 @@ namespace SCVMSR.Controllers
                     }
                 }
 
-                // Footer del PDF
+                // Pie de página indicando que no es un comprobante fiscal
                 doc.Add(new Paragraph("\n"));
-                Paragraph footer = new Paragraph("Este es un resumen de todas las solicitudes realizadas en el mes anterior.", FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.BLACK));
+                Paragraph footer = new Paragraph("Este reporte contiene las solicitudes del anterior mes.", FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.BLACK));
                 footer.Alignment = Element.ALIGN_CENTER;
                 doc.Add(footer);
 

@@ -28,22 +28,33 @@ namespace SCVMSR.Models
 
         [Display(Name = "Nombre")]
         [StringLength(100, ErrorMessage = "El nombre debe ser de 100 máximo.")]
+        [Required(ErrorMessage = "Digite el nombre.")]
+        [RegularExpression(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]+$", ErrorMessage = "Solo se permiten letras, incluyendo acentos y ñ.")]
         public string Nombre { get; set; }
 
         [Display(Name = "Cédula")]
-        [StringLength(100, ErrorMessage = "La cédula debe ser de 100 máximo.")]
+        [StringLength(20, ErrorMessage = "La cédula debe ser de 20 máximo.")]
+        [Required(ErrorMessage = "Digite la cédula.")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Solo se permiten números.")]
         public string Cedula { get; set; }
 
         [Display(Name = "Segundo Nombre")]
         [StringLength(100, ErrorMessage = "El segundo nombre debe ser de 100 máximo.")]
+        [Required(ErrorMessage = "Si el funcionario no tiene este dato colocar NO.")]
+        [RegularExpression(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]+$", ErrorMessage = "Solo se permiten letras, incluyendo acentos y ñ.")]
         public string SegundoNombre { get; set; }
 
         [Display(Name = "Primer Apellido")]
         [StringLength(100, ErrorMessage = "El primer apellido debe ser de 100 máximo.")]
+        [Required(ErrorMessage = "Digite el primer apellido.")]
+        [RegularExpression(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]+$", ErrorMessage = "Solo se permiten letras, incluyendo acentos y ñ.")]
         public string PrimerApellido { get; set; }
 
         [Display(Name = "Segundo Apellido")]
         [StringLength(100, ErrorMessage = "El segundo apellido debe ser de 100 máximo.")]
+        [Required(ErrorMessage = "Digite el segundo apellido.")]
+        [RegularExpression(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]+$", ErrorMessage = "Solo se permiten letras, incluyendo acentos y ñ.")]
+
         public string SegundoApellido { get; set; }
 
         [Display(Name = "Fecha Nacimiento")]
@@ -60,20 +71,27 @@ namespace SCVMSR.Models
 
         [Display(Name = "Correo")]
         [StringLength(50, ErrorMessage = "El correo debe ser de 50 máximo.")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Digite un correo válido.")]
+        [Required(ErrorMessage = "Digite el correo.")]
         public string CorreoElectronico { get; set; }
 
         [Display(Name = "Teléfono")]
         [StringLength(8, ErrorMessage = "El teléfono debe ser de 8 máximo.")]
         [RegularExpression(@"^\d{8}$", ErrorMessage = "El teléfono debe contener solo números y tener exactamente 8 dígitos.")]
+        [Required(ErrorMessage = "Digite el teléfono.")]
         public string Telefono { get; set; }
         public Nullable<bool> Estado { get; set; }
 
         [Display(Name = "Saldo")]
+        [Required(ErrorMessage = "Digite el saldo.")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Solo se permiten números.")]
         public int Saldo { get; set; }
         public string FileName { get; set; }
         public byte[] ImageData { get; set; }
 
         [Range(0, 100000000, ErrorMessage = "El saldo debe ser un valor entre 0 y 100,000,000.")]
+        [Required(ErrorMessage = "Digite el salario.")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Solo se permiten números.")]
         public decimal Salario { get; set; }
 
         [NotMapped] // Este atributo indica que este campo no se almacenará en la base de datos

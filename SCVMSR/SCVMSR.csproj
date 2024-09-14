@@ -275,6 +275,7 @@
     <Content Include="Content\assets\img\card.jpg" />
     <Content Include="Content\assets\img\favicon.png" />
     <Content Include="Content\assets\img\logo.png" />
+    <Content Include="Content\assets\img\logomunicipalidad.png" />
     <Content Include="Content\assets\img\messages-1.jpg" />
     <Content Include="Content\assets\img\messages-2.jpg" />
     <Content Include="Content\assets\img\messages-3.jpg" />

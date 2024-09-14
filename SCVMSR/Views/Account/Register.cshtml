@@ -25,12 +25,25 @@
     <link href="~/Content/assets/css/style.css" rel="stylesheet">
 
 </head>
+
+<style>
+    .custom-input {
+        border-color: #333 !important; /* Cambia #333 por el color que prefieras */
+        border-width: 2px !important; /* Aumenta el grosor del borde si lo deseas */
+    }
+    .card {
+        border: 1px solid #ddd; /* Ajusta el borde si es necesario */
+        border-radius: 10px; /* Ajusta el radio del borde si es necesario */
+        overflow: hidden; /* Asegura que el contenido no sobresalga */
+    }
+</style>
+
 <main>
     <div class="container">
         <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4" >
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-lg-6 col-md-8 d-flex flex-column align-items-center justify-content-center">
+                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
                         <div class="d-flex justify-content-center py-4">
                             <a href="index.html" class="logo d-flex align-items-center w-auto">
@@ -38,7 +51,7 @@
                             </a>
                         </div><!-- End Logo -->
 
-                        <div class="card mb-12">
+                        <div class="card mb-4">
                             <div class="card-body">
                                 <div class="pt-4 pb-2">
                                     <h5 class="card-title text-center pb-0 fs-4">Crear Cuenta</h5>
@@ -47,25 +60,24 @@
                                 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                                 {
                                     @Html.AntiForgeryToken()
-                                    <hr />
                                     @Html.ValidationSummary("", new { @class = "text-danger" })
                                     <div class="col-12">
-                                        @Html.LabelFor(m => m.Email, new { @class = "form-label" })
-                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-
+                                        @Html.LabelFor(m => m.Email, new { @class = "col-md-12 form-label" })
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control custom-input" })
                                     </div>
                                     <div class="col-12">
-                                        @Html.LabelFor(m => m.Password, new { @class = "form-label" })
-                                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                        @Html.LabelFor(m => m.Password, new { @class = "col-md-12 form-label" })
+                                        @Html.PasswordFor(m => m.Password, new { @class = "form-control custom-input" })
                                     </div>
                                     <div class="col-12">
-                                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-label" })
-                                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-12 form-label" })
+                                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control custom-input" })
                                     </div>
                                     <div class="col-12">
                                         <hr />
                                         <input type="submit" class="btn btn-primary w-100 " value="Registrarse" />
                                     </div>
+                                    <hr />
                                     <div class="col-12">
                                         <a href="@Url.Action("Login", "Account")" class="align-items-center justify-content-center">Iniciar sesión con tu cuenta</a>
                                     </div>

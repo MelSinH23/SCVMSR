@@ -28,6 +28,18 @@
 
 </head>
 
+<style>
+    .custom-input {
+        border-color: #333 !important; /* Cambia #333 por el color que prefieras */
+        border-width: 2px !important; /* Aumenta el grosor del borde si lo deseas */
+    }
+    .card {
+        border: 1px solid #ddd; /* Ajusta el borde si es necesario */
+        border-radius: 10px; /* Ajusta el radio del borde si es necesario */
+        overflow: hidden; /* Asegura que el contenido no sobresalga */
+    }
+</style>
+
 <main>
     <div class="container">
 
@@ -42,7 +54,7 @@
                             </a>
                         </div><!-- End Logo -->
 
-                        <div class="card mb-12">
+                        <div class="card mb-4">
                             <div class="card-body">
                                 <div class="pt-4 pb-2">
                                     <h5 class="card-title text-center pb-0 fs-4">Entrar a Cuenta</h5>
@@ -51,22 +63,22 @@
                                 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                                 {
                                     @Html.AntiForgeryToken()
-                                    <hr />
                                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                     <div class="col-12">
                                         @Html.LabelFor(m => m.Email, new { @class = "col-md-12 control-label" })
-                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control custom-input" })
                                             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-12">
                                         @Html.LabelFor(m => m.Password, new { @class = "col-md-12 control-label" })
-                                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                            @Html.PasswordFor(m => m.Password, new { @class = "form-control custom-input" })
                                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-12">
                                             <hr />
                                             <input type="submit" value="Iniciar sesión" class="btn btn-primary w-100 " />
                                     </div>
+                                    <hr />
                                     <p>
                                         @Html.ActionLink("Registrarse como usuario nuevo", "Register")
                                     </p>
@@ -79,11 +91,11 @@
             </div>
         </section>
     </div>
-    <div class="col-md-4">
+    @*<div class="col-md-4">
         <section id="socialLoginForm">
             @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
         </section>
-    </div>
+    </div>*@
 
     <!-- Vendor JS Files -->
     <script src="~/Content/assets/vendor/apexcharts/apexcharts.min.js"></script>

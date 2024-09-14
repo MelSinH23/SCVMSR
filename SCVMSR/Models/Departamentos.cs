@@ -25,6 +25,8 @@ namespace SCVMSR.Models
         public int IdDepartamento { get; set; }
 
         [Display(Name = "Nombre Departamento")]
+        [Required(ErrorMessage = "Digite el nombre.")]
+        [RegularExpression(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]+$", ErrorMessage = "Solo se permiten letras, incluyendo acentos y ñ.")]
         public string Nombre { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

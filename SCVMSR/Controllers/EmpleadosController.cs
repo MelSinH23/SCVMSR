@@ -66,20 +66,35 @@ namespace SCVMSR.Controllers
             {
                 try
                 {
-                    // Guardar el archivo en el servidor
+                    // Validar que se haya subido un archivo y que el archivo sea una imagen
                     if (imagenFile != null && imagenFile.ContentLength > 0)
                     {
-                        // Guardar la imagen en la carpeta deseada
-                        var imagePath = Path.Combine(Server.MapPath("~/FotosEmpleados/"), Path.GetFileName(imagenFile.FileName));
-                        imagenFile.SaveAs(imagePath);
+                        var fileName = Path.GetFileName(imagenFile.FileName);
+                        var fileType = imagenFile.ContentType;
+                        var validTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/jpg" };
 
-                        // Asignar el nombre de la imagen al modelo
-                        empleados.FileName = imagenFile.FileName;
+                        if (validTypes.Contains(fileType))
+                        {
+                            // Guardar la imagen en la carpeta deseada
+                            var imagePath = Path.Combine(Server.MapPath("~/FotosEmpleados/"), fileName);
+                            imagenFile.SaveAs(imagePath);
+
+                            // Asignar el nombre de la imagen al modelo
+                            empleados.FileName = fileName;
+                        }
+                        else
+                        {
+                            // Si el archivo no es una imagen, agregar un error al modelo
+                            ModelState.AddModelError("", "Tipo de archivo no permitido. Seleccione una imagen (JPEG, PNG, GIF o JPG).");
+                        }
                     }
 
-                    db.Empleados.Add(empleados);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    if (ModelState.IsValid)
+                    {
+                        db.Empleados.Add(empleados);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -92,6 +107,7 @@ namespace SCVMSR.Controllers
             ViewBag.IdPuesto = new SelectList(db.Puestos, "IdPuesto", "Nombre", empleados.IdPuesto);
             return View(empleados);
         }
+
 
 
         // GET: Empleados/Edit/5

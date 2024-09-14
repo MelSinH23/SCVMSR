@@ -24,6 +24,8 @@ namespace SCVMSR.Models
         public int IdPuesto { get; set; }
 
         [Display(Name = "Nombre Puesto")]
+        [Required(ErrorMessage = "Digite el nombre.")]
+        [RegularExpression(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]+$", ErrorMessage = "Solo se permiten letras, incluyendo acentos y ñ.")]
         public string Nombre { get; set; }
         public Nullable<int> IdDepartamento { get; set; }
     
