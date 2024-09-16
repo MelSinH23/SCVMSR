@@ -23,11 +23,10 @@
                 @foreach (System.Data.DataRow row in empleadosInactivos.Rows)
                 {
                     <tr>
-                        <td>@row["NombreCompleto"]</td>
-                        <td>@row["Puesto"]</td>
-                        <td>@row["FechaContratacion"]</td>
-                        <td>@row["Saldo"]</td>
-                        <td>
+                        <td class="text-center">@row["NombreCompleto"]</td>
+                        <td class="text-center">@row["Puesto"]</td>
+                        <td class="text-center">@Convert.ToDateTime(row["FechaContratacion"]).ToString("yyyy-MM-dd")</td>
+                        <td class="text-center">@row["Saldo"]</td>
                     </tr>
                 }
             </tbody>

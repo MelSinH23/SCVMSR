@@ -424,17 +424,31 @@ namespace SCVMSR.Controllers
             base.Dispose(disposing);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize] // Asegúrate de que el usuario esté autenticado
-        public ActionResult Logout()
-        {
-            // Cierra la sesión del usuario
-            FormsAuthentication.SignOut();
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[Authorize]
+        //public ActionResult Logout()
+        //{
+        //    // Cierra la sesión de autenticación
+        //    FormsAuthentication.SignOut();
 
-            // Redirige a la página de inicio o a una página específica después del cierre de sesión
-            return RedirectToAction("Login", "Account");
-        }
+        //    // Limpia la sesión del usuario
+        //    Session.Clear();        // Limpia los datos de la sesión
+        //    Session.Abandon();      // Abandona la sesión actual
+        //    Session.RemoveAll();    // Elimina todos los elementos de la sesión
+
+        //    // Limpia las cookies de autenticación
+        //    var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, "")
+        //    {
+        //        Expires = DateTime.Now.AddYears(-1),
+        //        HttpOnly = true
+        //    };
+        //    Response.Cookies.Add(cookie);
+
+        //    // Redirige al usuario a la página de login
+        //    return RedirectToAction("Login", "Account");
+        //}
+
 
         #region Aplicaciones auxiliares
         // Se usa para la protección XSRF al agregar inicios de sesión externos

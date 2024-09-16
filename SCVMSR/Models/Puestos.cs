@@ -20,6 +20,8 @@ namespace SCVMSR.Models
         {
             this.Empleados = new HashSet<Empleados>();
         }
+
+        [Key]
         [Display(Name = "Puesto")]
         public int IdPuesto { get; set; }
 
