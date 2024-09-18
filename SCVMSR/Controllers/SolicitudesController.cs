@@ -46,7 +46,18 @@ namespace SCVMSR.Controllers
         // GET: Solicitudes/Create
         public ActionResult Create()
         {
-            ViewBag.IdEmpleado = new SelectList(db.Empleados, "IdEmpleado", "Nombre");
+            // Filtrar empleados activos para el dropdown
+            var empleadosActivos = db.Empleados
+                .Where(e => e.Estado == true)
+                .Select(e => new {
+                    IdEmpleado = e.IdEmpleado,
+                    FullName = e.Nombre + " " + e.PrimerApellido + " " + e.SegundoApellido
+                })
+                .ToList();
+
+            // Pasar la lista como select list a la vista
+            ViewBag.IdEmpleado = new SelectList(empleadosActivos, "IdEmpleado", "FullName");
+
             return View();
         }
 
@@ -79,7 +90,8 @@ namespace SCVMSR.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            ViewBag.IdEmpleado = new SelectList(db.Empleados, "IdEmpleado", "Nombre", solicitudes.IdEmpleado);
+            var empleadosActivos = db.Empleados.Where(e => e.Estado == true).ToList();
+            ViewBag.IdEmpleado = new SelectList(empleadosActivos, "IdEmpleado", "Nombre", solicitudes.IdEmpleado);
             return View(solicitudes);
         }
 

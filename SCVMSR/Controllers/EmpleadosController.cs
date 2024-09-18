@@ -21,6 +21,23 @@ namespace SCVMSR.Controllers
     {
         private SCVMSREntities db = new SCVMSREntities();
 
+        // GET: Empleados/BuscarEmpleados
+        public JsonResult BuscarEmpleados(string q)
+        {
+            var empleados = db.Empleados
+                .Where(e => e.Estado == true && (e.Nombre.Contains(q) || e.PrimerApellido.Contains(q) || e.SegundoApellido.Contains(q))) // Solo empleados activos
+                .Select(e => new
+                {
+                    e.IdEmpleado,
+                    e.Nombre,
+                    e.PrimerApellido,
+                    e.SegundoApellido
+                })
+                .ToList();
+
+            return Json(empleados, JsonRequestBehavior.AllowGet);
+        }
+
         // GET: Empleados
         public ActionResult Index()
         {
@@ -62,6 +79,18 @@ namespace SCVMSR.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IdEmpleado,Nombre,SegundoNombre,PrimerApellido,SegundoApellido,Cedula,FechaNacimiento,FechaContratacion,IdDepartamento,IdPuesto,CorreoElectronico,Telefono,Estado,Saldo,Salario,FileName,ImageData")] Empleados empleados, HttpPostedFileBase imagenFile)
         {
+            // Verificar si la cédula ya existe para cualquier empleado
+            if (db.Empleados.Any(x => x.Cedula == empleados.Cedula))
+            {
+                ModelState.AddModelError("Cedula", "La cédula ya existe.");
+            }
+
+            // Verificar si el número ya existe para cualquier empleado
+            if (db.Empleados.Any(x => x.Telefono == empleados.Telefono))
+            {
+                ModelState.AddModelError("Telefono", "El número teléfonico ya existe.");
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -108,8 +137,6 @@ namespace SCVMSR.Controllers
             return View(empleados);
         }
 
-
-
         // GET: Empleados/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -122,6 +149,7 @@ namespace SCVMSR.Controllers
             {
                 return HttpNotFound();
             }
+
             ViewBag.IdDepartamento = new SelectList(db.Departamentos, "IdDepartamento", "Nombre", empleados.IdDepartamento);
             ViewBag.IdPuesto = new SelectList(db.Puestos, "IdPuesto", "Nombre", empleados.IdPuesto);
             return View(empleados);
@@ -197,10 +225,8 @@ namespace SCVMSR.Controllers
             return View(empleados);
         }
 
-
-
-    // GET: Empleados/Delete/5
-    public ActionResult Delete(int? id)
+        // GET: Empleados/Delete/5
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {

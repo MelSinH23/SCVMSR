@@ -5,31 +5,58 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    #empleado-list {
+        position: absolute; /* Superpone el cuadro */
+        max-height: 200px; /* Limitar la altura máxima */
+        overflow-y: auto; /* Habilitar el desplazamiento si hay muchos empleados */
+        width: 270px; /* Asegura que tenga el mismo ancho que el TextBox */
+        z-index: 1000; /* Superpone sobre otros elementos */
+        border: 1px solid #ccc; /* Bordes para mejor visibilidad */
+        background-color: #fff; /* Fondo blanco */
+        padding-left: 0; /* Remueve padding innecesario */
+        margin-top: 5px; /* Un poco de espacio entre el campo de texto y la lista */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+        box-sizing: border-box; /* Incluir padding y borde en el cálculo de ancho */
+    }
+
+        #empleado-list li {
+            padding: 10px; /* Espaciado dentro de los elementos de la lista */
+            cursor: pointer; /* Cursor de selección */
+            list-style-type: none; /* Eliminar puntos de lista predeterminados */
+        }
+
+            #empleado-list li:hover {
+                background-color: #f0f0f0; /* Cambio de color al pasar el mouse */
+            }
+</style>
+
+
 <h2>Crear Nueva Solicitud</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.IdEmpleado, "IdEmpleado", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.IdEmpleado, "Empleado", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("IdEmpleado", null, htmlAttributes: new { @class = "form-control" })
+                @Html.TextBox("EmpleadoNombre", null, new { @class = "form-control", id = "empleado-nombre" })
+                @Html.HiddenFor(model => model.IdEmpleado, new { id = "hidden-id-empleado" })
                 @Html.ValidationMessageFor(model => model.IdEmpleado, "", new { @class = "text-danger" })
+                <ul id="empleado-list" class="list-group" style="display:none;"></ul>
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.Motivo, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.Motivo,
                                       new SelectList(new List<SelectListItem>
                                       {
-                                          new SelectListItem { Text = "Seleccione", Value = "", Selected = true },
                                           new SelectListItem { Text = "Licencia Con Goce de Salario", Value = "LicConGoce" },
                                           new SelectListItem { Text = "Licencia Sin Goce de Salario", Value = "LicSinGoce" },
                                           new SelectListItem { Text = "Maternidad/Paternidad", Value = "MaternidadPaternidad" }
@@ -92,4 +119,68 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- Include CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Include JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+
+    <!-- Inicializar Select2 -->
+    <script>
+    $(document).ready(function () {
+        var $empleadoNombre = $('#empleado-nombre');
+        var $empleadoList = $('#empleado-list');
+        var $hiddenIdEmpleado = $('#hidden-id-empleado');
+
+        $empleadoNombre.on('input', function () {
+            var query = $(this).val();
+            if (query.length > 0) {
+                $.ajax({
+                    url: '@Url.Action("BuscarEmpleados", "Empleados")',
+                    data: { q: query },
+                    success: function (data) {
+                        $empleadoList.empty();
+                        if (data.length > 0) {
+                            data.forEach(function (empleado) {
+                                $empleadoList.append(
+                                    $('<li>', {
+                                        text: empleado.Nombre + ' ' + empleado.PrimerApellido + ' ' + empleado.SegundoApellido, // Correcto
+                                        'data-id': empleado.IdEmpleado,
+                                        'data-nombre': empleado.Nombre,
+                                        'data-primerapellido': empleado.PrimerApellido,
+                                        'data-segundopellido': empleado.SegundoApellido,
+                                        'class': 'list-group-item'
+                                    })
+                                );
+                            });
+                            $empleadoList.show();
+                        } else {
+                            $empleadoList.hide();
+                        }
+                    }
+                });
+            } else {
+                $empleadoList.hide();
+            }
+        });
+
+        $empleadoList.on('click', 'li', function () {
+            var id = $(this).data('id');
+            var nombre = $(this).data('nombre');
+            var primerApellido = $(this).data('primerapellido');
+            var segundoApellido = $(this).data('segundopellido');
+            $empleadoNombre.val(nombre + ' ' + primerApellido + ' ' + segundoApellido);  // Corregimos la concatenación
+            $hiddenIdEmpleado.val(id);
+            $empleadoList.hide();
+        });
+
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#empleado-nombre, #empleado-list').length) {
+                $empleadoList.hide();
+            }
+        });
+    });
+    </script>
 }
