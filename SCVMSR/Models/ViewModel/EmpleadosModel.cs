@@ -22,12 +22,11 @@ namespace SCVMSR.Models.ViewModel
         [StringLength(20, ErrorMessage = "La cédula debe ser de 20 máximo.")]
         [Required(ErrorMessage = "Digite la cédula.")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Solo se permiten números.")]
-        [CedulaExiste(ErrorMessage = "La cédula ya existe.")]
+        //[CedulaExiste(ErrorMessage = "La cédula ya existe.")]
         public string Cedula { get; set; }
 
         [Display(Name = "Segundo Nombre")]
         [StringLength(100, ErrorMessage = "El segundo nombre debe ser de 100 máximo.")]
-        [Required(ErrorMessage = "Si el funcionario no tiene este dato colocar NO.")]
         [RegularExpression(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s'-]+$", ErrorMessage = "Solo se permiten letras, incluyendo acentos, ñ, apóstrofes (') y guiones (-).")]
         public string SegundoNombre { get; set; }
 
@@ -40,7 +39,6 @@ namespace SCVMSR.Models.ViewModel
 
         [Display(Name = "Segundo Apellido")]
         [StringLength(100, ErrorMessage = "El segundo apellido debe ser de 100 máximo.")]
-        [Required(ErrorMessage = "Digite el segundo apellido.")]
         [RegularExpression(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s'-]+$", ErrorMessage = "Solo se permiten letras, incluyendo acentos, ñ, apóstrofes (') y guiones (-).")]
 
         public string SegundoApellido { get; set; }
@@ -78,35 +76,21 @@ namespace SCVMSR.Models.ViewModel
         public string FileName { get; set; }
         public byte[] ImageData { get; set; }
 
-        [Range(0, 100000000, ErrorMessage = "El saldo debe ser un valor entre 0 y 100,000,000.")]
+        [Range(0, 100000000, ErrorMessage = "El salario debe ser un valor entre 0 y 100,000,000.")]
         [Required(ErrorMessage = "Digite el salario.")]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Solo se permiten números.")]
         public decimal Salario { get; set; }
 
         [NotMapped] // Este atributo indica que este campo no se almacenará en la base de datos
         public decimal ValorDiasSaldo { get; set; }
+
+        [NotMapped]
+        public bool IsEdit { get; set; }
 
         public virtual Departamentos Departamentos { get; set; }
 
         public virtual Puestos Puestos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Solicitudes> Solicitudes { get; set; }
-
-        public class CedulaExiste : ValidationAttribute
-        {
-            protected override ValidationResult IsValid(Object value, ValidationContext validationContext)
-            {
-                using (SCVMSREntities db = new SCVMSREntities())
-                {
-                    string cedula = (string)value; //Aquí está convirtiendo a string
-                    if (db.Empleados.Where(x => x.Cedula == cedula).Count() > 0) //Si el conteo es mayor a 0 es por que ya existe
-                    {
-                        return new ValidationResult("La cédula ya existe.");
-                    }
-                    return ValidationResult.Success;
-                }
-            }
-        }
 
     }
 }

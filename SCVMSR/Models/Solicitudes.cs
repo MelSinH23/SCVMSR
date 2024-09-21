@@ -16,6 +16,7 @@ namespace SCVMSR.Models
     public partial class Solicitudes
     {
         [Display(Name = "#")]
+        [Key]
         public int IdSolicitud { get; set; }
 
         [Display(Name = "Empleado")]

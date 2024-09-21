@@ -21,9 +21,8 @@ namespace SCVMSR.Models
             this.Empleados = new HashSet<Empleados>();
             this.Puestos = new HashSet<Puestos>();
         }
-
+    
         [Key]
-        [Display(Name = "Departamento")]
         public int IdDepartamento { get; set; }
 
         [Display(Name = "Nombre Departamento")]

@@ -15,44 +15,43 @@
 <table class="table col datatable">
     <thead>
         <tr>
-            <th>
+            <th style="text-align: center;">
                 Foto
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
-            <th>
+            <th style="text-align: center;">
                 @Html.DisplayNameFor(model => model.Cedula)
             </th>
-            <th>
+            <th style="text-align: center;">
                 @Html.DisplayNameFor(model => model.FechaNacimiento)
             </th>
-            <th>
+            <th style="text-align: center;">
                 @Html.DisplayNameFor(model => model.FechaContratacion)
             </th>
-            <th>
+            <th style="text-align: center;">
                 @Html.DisplayNameFor(model => model.CorreoElectronico)
             </th>
-            <th>
+            <th style="text-align: center;">
                 @Html.DisplayNameFor(model => model.Telefono)
             </th>
-            <th>
+            <th style="text-align: center;">
                 @Html.DisplayNameFor(model => model.Estado)
             </th>
-            <th>
+            <th style="text-align: center;">
                 @Html.DisplayNameFor(model => model.Saldo)
             </th>
-            <th>
+            <th style="text-align: center;">
                 @Html.DisplayNameFor(model => model.Salario)
             </th>
-            <th>
+            <th style="text-align: center;">
                 Valor
             </th>
-
-            <th>
+            <th style="text-align: center;">
                 @Html.DisplayNameFor(model => model.Departamentos.Nombre)
             </th>
-            <th>
+            <th style="text-align: center;">
                 @Html.DisplayNameFor(model => model.Puestos.Nombre)
             </th>
             <th></th>
@@ -63,7 +62,6 @@
         {
         <tr>
             <td>
-                @*<img src="@Url.Content("~/FotosEmpleados/" + item.FileName)" alt="Imagen" width="100" height="100" />*@
                 <img src="@Url.Content((item.FileName != null && System.IO.File.Exists(Server.MapPath("~/FotosEmpleados/") + item.FileName))
                 ? "~/FotosEmpleados/" + item.FileName
                 : "~/Content/DefaultImages/default.jpg")"
@@ -89,7 +87,7 @@
                 @Html.DisplayFor(modelItem => item.Telefono)
             </td>
             <td>
-                @(item.Estado.HasValue ? (item.Estado.Value ? "Activo" : "Inactivo") : "Desconocido")
+                @(item.Estado ? "Activo" : "Inactivo")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Saldo)

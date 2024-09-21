@@ -11,27 +11,19 @@ namespace SCVMSR.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    public partial class Puestos
+    
+    public partial class AspNetRoles
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Puestos()
+        public AspNetRoles()
         {
-            this.Empleados = new HashSet<Empleados>();
+            this.AspNetUsers = new HashSet<AspNetUsers>();
         }
-        
-        [Key]
-        public int IdPuesto { get; set; }
-
-        [Display(Name = "Nombre Puesto")]
-        [Required(ErrorMessage = "Digite el nombre.")]
-        [RegularExpression(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]+$", ErrorMessage = "Solo se permiten letras, incluyendo acentos y ñ.")]
-        public string Nombre { get; set; }
-        public Nullable<int> IdDepartamento { get; set; }
     
-        public virtual Departamentos Departamentos { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Empleados> Empleados { get; set; }
+        public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }
     }
 }

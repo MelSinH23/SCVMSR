@@ -102,22 +102,42 @@ namespace SCVMSR.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Solicitudes solicitudes = db.Solicitudes.Find(id);
             if (solicitudes == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IdEmpleado = new SelectList(db.Empleados, "IdEmpleado", "Nombre", solicitudes.IdEmpleado);
+
+            // Obtener el empleado relacionado con la solicitud
+            var empleado = db.Empleados
+                .Where(e => e.IdEmpleado == solicitudes.IdEmpleado)
+                .Select(e => new {
+                    IdEmpleado = e.IdEmpleado,
+                    FullName = e.Nombre + " " + e.PrimerApellido + " " + e.SegundoApellido
+                })
+                .FirstOrDefault();
+
+            // Pasar el nombre completo del empleado a la vista
+            ViewBag.EmpleadoNombre = empleado != null ? empleado.FullName : string.Empty;
+
             return View(solicitudes);
         }
+
 
         // POST: Solicitudes/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdSolicitud,IdEmpleado,Motivo,FechaInicio,FechaFin,Estado,FechaSolicitud")] Solicitudes solicitudes)
+        public ActionResult Edit([Bind(Include = "IdSolicitud,IdEmpleado,Motivo,FechaInicio,FechaFin,Estado,FechaSolicitud")] Solicitudes solicitudes, string EmpleadoNombre)
         {
+            var empleado = db.Empleados.FirstOrDefault(e => e.IdEmpleado == solicitudes.IdEmpleado);
+            if (empleado == null || empleado.Estado == false)
+            {
+                ModelState.AddModelError("IdEmpleado", "El empleado seleccionado está inactivo o no existe.");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(solicitudes).State = EntityState.Modified;
@@ -132,9 +152,12 @@ namespace SCVMSR.Controllers
 
                 return RedirectToAction("Index");
             }
-            ViewBag.IdEmpleado = new SelectList(db.Empleados, "IdEmpleado", "Nombre", solicitudes.IdEmpleado);
+
+            // Si el modelo no es válido, volver a la vista con los errores en el ModelState
+            ViewBag.IdEmpleado = new SelectList(db.Empleados.Where(e => e.Estado == true), "IdEmpleado", "Nombre", solicitudes.IdEmpleado);
             return View(solicitudes);
         }
+
 
         // GET: Solicitudes/Delete/5
         public ActionResult Delete(int? id)
@@ -203,6 +226,13 @@ namespace SCVMSR.Controllers
 
         public ActionResult ImprimirResumenMesAnteriorPDF()
         {
+            // Diccionario para mapear los motivos
+            Dictionary<string, string> motivosMap = new Dictionary<string, string>()
+            {
+                { "LicSinGoce", "Licencia Sin Goce" },
+                { "LicConGoce", "Licencia Con Goce" },
+                { "MaternidadPaternidad", "Maternidad/Paternidad" },
+            };
             // Establece la conexión a la base de datos
             string connectionString = "Server=localhost\\sqlexpress;Database=SCVMSR;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True;";
 
@@ -218,36 +248,60 @@ namespace SCVMSR.Controllers
                 PdfWriter writer = PdfWriter.GetInstance(doc, fs);
                 doc.Open();
 
-                // Agregar logo en la esquina superior izquierda
-                string logoPath = Server.MapPath("~/Content/assets/img/logomunicipalidad.png"); // Ajusta la ruta del logo según corresponda
-                iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(logoPath);
-                logo.ScaleAbsolute(65f, 65f); // Ajusta el tamaño del logo si es necesario
-                logo.SetAbsolutePosition(40, doc.PageSize.Height - 60); // Ajusta la posición según sea necesario
-                doc.Add(logo);
+                // Ajustar la posición del logo más abajo
+                //string logoPath = Server.MapPath("~/Content/assets/img/logomunicipalidad.png");
+                //iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(logoPath);
+                //logo.ScaleAbsolute(65f, 65f);
+                //logo.SetAbsolutePosition(40, doc.PageSize.Height - 100);
+                //doc.Add(logo);
 
                 doc.Add(new Paragraph("\n"));
 
-                // Encabezado de la empresa y detalles del reporte
-                PdfPTable headerTable = new PdfPTable(1);
+                // Crear una tabla para el logo y el texto de la empresa
+                PdfPTable headerTable = new PdfPTable(2);
                 headerTable.WidthPercentage = 100;
+                headerTable.SetWidths(new float[] { 1f, 3f });
 
-                PdfPCell empresaCell = new PdfPCell(new Phrase("Municipalidad de San Rafael de Heredia\nSan Rafael de Heredia, Costa Rica", FontFactory.GetFont(FontFactory.HELVETICA, 12, BaseColor.BLACK)));
+                // Primera columna: agregar el logo
+                string logoPath = Server.MapPath("~/Content/assets/img/logomunicipalidad.png");
+                iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(logoPath);
+                logo.ScaleAbsolute(65f, 65f);
+
+                PdfPCell logoCell = new PdfPCell(logo);
+                logoCell.Border = Rectangle.NO_BORDER;
+                logoCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                headerTable.AddCell(logoCell);
+
+                // Segunda columna: agregar el texto de la empresa
+                PdfPCell empresaCell = new PdfPCell(new Phrase("Municipalidad de San Rafael de Heredia\nSan Rafael de Heredia, Costa Rica", FontFactory.GetFont(FontFactory.HELVETICA, 9, BaseColor.BLACK)));
                 empresaCell.HorizontalAlignment = Element.ALIGN_LEFT;
+                empresaCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 empresaCell.Border = Rectangle.NO_BORDER;
                 headerTable.AddCell(empresaCell);
+
+                // Añadir la tabla de encabezado (logo y texto) al documento
+                doc.Add(headerTable);
+
+                // Espacio entre el encabezado y los detalles del reporte
+                doc.Add(new Paragraph("\n"));
+
+                // Crear una tabla para los detalles del reporte
+                PdfPTable detailsTable = new PdfPTable(1); // Una columna para el detalle
+                detailsTable.WidthPercentage = 100;
 
                 // Detalles del reporte
                 PdfPCell reporteCell = new PdfPCell(new Phrase("REPORTE DE SOLICITUDES DEL MES ANTERIOR", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.BLACK)));
                 reporteCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 reporteCell.Border = Rectangle.NO_BORDER;
-                headerTable.AddCell(reporteCell);
+                detailsTable.AddCell(reporteCell);
 
                 PdfPCell fechaReporteCell = new PdfPCell(new Phrase("Fecha del Reporte: " + DateTime.Now.ToString("dd/MM/yyyy"), FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.BLACK)));
                 fechaReporteCell.HorizontalAlignment = Element.ALIGN_RIGHT;
                 fechaReporteCell.Border = Rectangle.NO_BORDER;
-                headerTable.AddCell(fechaReporteCell);
+                detailsTable.AddCell(fechaReporteCell);
 
-                doc.Add(headerTable);
+                // Añadir la tabla de detalles del reporte al documento
+                doc.Add(detailsTable);
 
                 // Espacio
                 doc.Add(new Paragraph("\n"));
@@ -289,7 +343,11 @@ namespace SCVMSR.Controllers
                                 // Añadir los datos de las solicitudes
                                 foreach (DataRow row in dataTable.Rows)
                                 {
-                                    table.AddCell(new PdfPCell(new Phrase(row["Motivo"].ToString(), FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK))));
+                                    // Mapea el valor del motivo al valor legible
+                                    string motivoBD = row["Motivo"].ToString();
+                                    string motivoLegible = motivosMap.ContainsKey(motivoBD) ? motivosMap[motivoBD] : motivoBD; // Si no está en el diccionario, muestra el valor por defecto
+
+                                    table.AddCell(new PdfPCell(new Phrase(motivoLegible, FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK)))); 
                                     table.AddCell(new PdfPCell(new Phrase(row["NombreCompleto"].ToString(), FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK))));
                                     table.AddCell(new PdfPCell(new Phrase(Convert.ToDateTime(row["FechaInicio"]).ToString("dd/MM/yyyy"), FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK))));
                                     table.AddCell(new PdfPCell(new Phrase(Convert.ToDateTime(row["FechaFin"]).ToString("dd/MM/yyyy"), FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK))));

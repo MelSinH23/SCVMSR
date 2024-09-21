@@ -13,6 +13,14 @@
         <AssociationConnector Association="SCVMSRModel.FK__Puestos__IdDepar__4BAC3F29" ManuallyRouted="false" />
         <AssociationConnector Association="SCVMSRModel.FK__Empleados__IdPue__4F7CD00D" ManuallyRouted="false" />
         <AssociationConnector Association="SCVMSRModel.FK__Solicitud__IdEmp__52593CB8" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SCVMSRModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SCVMSRModel.AspNetRoles" Width="1.5" PointX="7.75" PointY="2.5" />
+        <EntityTypeShape EntityType="SCVMSRModel.AspNetUserClaims" Width="1.5" PointX="12.25" PointY="1" />
+        <EntityTypeShape EntityType="SCVMSRModel.AspNetUserLogins" Width="1.5" PointX="12.25" PointY="3.75" />
+        <EntityTypeShape EntityType="SCVMSRModel.AspNetUsers" Width="1.5" PointX="10" PointY="1.375" />
+        <AssociationConnector Association="SCVMSRModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SCVMSRModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SCVMSRModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

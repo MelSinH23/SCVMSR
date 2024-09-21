@@ -31,6 +31,11 @@ namespace SCVMSR.Models
         public virtual DbSet<Empleados> Empleados { get; set; }
         public virtual DbSet<Puestos> Puestos { get; set; }
         public virtual DbSet<Solicitudes> Solicitudes { get; set; }
+        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
     
         public virtual int CalcularValorDiasDisfrute(Nullable<int> idEmpleado, ObjectParameter valorDiasDisfrute)
         {

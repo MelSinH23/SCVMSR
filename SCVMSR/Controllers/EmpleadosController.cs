@@ -360,6 +360,15 @@ namespace SCVMSR.Controllers
         {
             if (file != null && file.ContentLength > 0)
             {
+                // Validar si el archivo es de tipo Excel
+                var allowedExtensions = new[] { ".xls", ".xlsx" };
+                var fileExtension = Path.GetExtension(file.FileName).ToLower();
+
+                if (!allowedExtensions.Contains(fileExtension))
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Json(new { message = "Solo se permiten archivos de tipo Excel (.xls, .xlsx)." });
+                }
                 try
                 {
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -376,10 +385,19 @@ namespace SCVMSR.Controllers
 
                         var rowCount = worksheet.Dimension.Rows;
                         List<string> errores = new List<string>();
+                        HashSet<string> telefonos = new HashSet<string>();
 
                         for (int row = 2; row <= rowCount; row++)
                         {
                             string cedula = worksheet.Cells[row, 1].Value?.ToString() ?? "";
+                            string telefono = worksheet.Cells[row, 6].Value?.ToString() ?? "";
+
+                            // Verificar duplicados de teléfono
+                            if (!string.IsNullOrEmpty(telefono) && !telefonos.Add(telefono))
+                            {
+                                errores.Add($"El número telefónico '{telefono}' en la fila {row} ya está registrado.");
+                                continue;
+                            }
 
                             // Si el empleado ya existe, omitir la inserción
                             if (db.Empleados.Any(e => e.Cedula == cedula))
@@ -387,29 +405,27 @@ namespace SCVMSR.Controllers
                                 continue;
                             }
 
-                            // Obtener el nombre del puesto desde el archivo Excel (columna 10)
                             string nombrePuesto = worksheet.Cells[row, 10].Value?.ToString() ?? "";
-
-                            // Buscar el puesto en la base de datos por su nombre
                             var puesto = db.Puestos.FirstOrDefault(p => p.Nombre == nombrePuesto);
 
                             if (puesto == null)
                             {
-                                // Si no se encuentra el puesto, añadir un error y continuar con la siguiente fila
                                 errores.Add($"El puesto '{nombrePuesto}' en la fila {row} no existe en la base de datos.");
                                 continue;
                             }
 
-                            // Obtener el nombre del departamento desde el archivo Excel (columna 13, por ejemplo)
                             string nombreDepartamento = worksheet.Cells[row, 11].Value?.ToString() ?? "";
-
-                            // Buscar el departamento en la base de datos por su nombre
                             var departamento = db.Departamentos.FirstOrDefault(d => d.Nombre == nombreDepartamento);
 
                             if (departamento == null)
                             {
-                                // Si no se encuentra el departamento, añadir un error y continuar con la siguiente fila
                                 errores.Add($"El departamento '{nombreDepartamento}' en la fila {row} no existe en la base de datos.");
+                                continue;
+                            }
+
+                            if (!DateTime.TryParse(worksheet.Cells[row, 13].Value?.ToString(), out DateTime fechaIngreso))
+                            {
+                                errores.Add($"La fecha de contratación en la fila {row} es inválida o está vacía.");
                                 continue;
                             }
 
@@ -430,7 +446,7 @@ namespace SCVMSR.Controllers
                                 IdPuesto = puesto.IdPuesto, // Asigna el IdPuesto basado en el nombre del puesto
                                 IdDepartamento = departamento.IdDepartamento, // Asigna el IdDepartamento basado en el nombre del departamento
                                 FechaNacimiento = DateTime.TryParse(worksheet.Cells[row, 12].Value?.ToString(), out DateTime fechaNacimiento) ? fechaNacimiento : (DateTime?)null,
-                                FechaContratacion = DateTime.TryParse(worksheet.Cells[row, 13].Value?.ToString(), out DateTime fechaIngreso) ? fechaIngreso : (DateTime?)null
+                                FechaContratacion = fechaIngreso
                             };
 
                             db.Empleados.Add(empleados);

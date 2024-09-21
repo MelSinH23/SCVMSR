@@ -8,6 +8,7 @@ namespace SCVMSR.Models.ViewModel
 {
     public class DepartamentosModel
     {
+        [Key]
         [Display(Name = "Departamento")]
         public int IdDepartamento { get; set; }
 

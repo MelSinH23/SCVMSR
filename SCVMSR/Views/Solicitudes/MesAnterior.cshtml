@@ -29,12 +29,12 @@
                 {
                 <tr>
                     <td>@row["NombreCompleto"]</td>
-                    <td>@row["Motivo"]</td>
-                    <td>@row["FechaInicio"]</td>
-                    <td>@row["FechaFin"]</td>
-                    <td>@row["DiasSolicitados"]</td>
-                    <td>@row["Estado"]</td>
-                    <td>@row["FechaSolicitud"]</td>
+                    <td class="text-center">@row["Motivo"]</td>
+                    <td class="text-center">@(((DateTime)row["FechaInicio"]).ToString("dd/MM/yyyy"))</td>
+                    <td class="text-center">@(((DateTime)row["FechaFin"]).ToString("dd/MM/yyyy"))</td>
+                    <td class="text-center">@row["DiasSolicitados"]</td>
+                    <td class="text-center">@row["Estado"]</td>
+                    <td class="text-center">@(((DateTime)row["FechaSolicitud"]).ToString("dd/MM/yyyy"))</td>
                 </tr>
                 }
             </tbody>
@@ -42,6 +42,7 @@
     }
     else
     {
-        <p>No se encontraron empleados inactivos</p>
+        <hr />
+        <p>No se encontraron solicitudes del mes anterior</p>
     }
 </div>
