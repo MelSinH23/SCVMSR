@@ -104,6 +104,12 @@ namespace SCVMSR.Controllers
 
                         if (validTypes.Contains(fileType))
                         {
+                            // Verificar si la carpeta 'FotosEmpleados' existe, y si no, crearla
+                            var folderPath = Server.MapPath("~/FotosEmpleados/");
+                            if (!Directory.Exists(folderPath))
+                            {
+                                Directory.CreateDirectory(folderPath);  // Crear la carpeta si no existe
+                            }
                             // Guardar la imagen en la carpeta deseada
                             var imagePath = Path.Combine(Server.MapPath("~/FotosEmpleados/"), fileName);
                             imagenFile.SaveAs(imagePath);
